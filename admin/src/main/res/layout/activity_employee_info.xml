@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".EmployeeInfo">
+
+    <TextView
+        android:id="@+id/employeeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name : Employee Name"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.131"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/employeeId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id : 45678423"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeName"
+        app:layout_constraintVertical_bias="0.017"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/visits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of Visits : 3"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.877"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shapeableImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.807"
+        app:layout_constraintStart_toEndOf="@+id/employeeName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_marginTop="20dp"
+        android:foreground="@drawable/card_background"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshClient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/clientList"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
