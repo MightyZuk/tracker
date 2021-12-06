@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OtpVerification">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/secular_one"
+        android:text="Enter OTP for verification"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.088"
+        tools:ignore="HardcodedText" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.12">
+
+        <EditText
+            android:id="@+id/one"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:importantForAutofill="no"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/background"
+            android:fontFamily="@font/secular_one"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:ignore="LabelFor"
+            tools:text="1" />
+
+        <EditText
+            android:id="@+id/two"
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:background="@drawable/background"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/secular_one"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <EditText
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:id="@+id/three"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            android:background="@drawable/background"
+            android:fontFamily="@font/secular_one"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <EditText
+            android:id="@+id/four"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:background="@drawable/background"
+            android:fontFamily="@font/secular_one"
+            android:gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/black"
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <EditText
+            android:id="@+id/five"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/background"
+            android:fontFamily="@font/secular_one"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <EditText
+            android:id="@+id/six"
+            android:layout_width="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            android:layout_height="45dp"
+            android:background="@drawable/background"
+            android:fontFamily="@font/secular_one"
+            android:gravity="center"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="1" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        android:elevation="10dp"
+        android:fontFamily="@font/secular_one"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="17dp"
+        android:text="Verify"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.266"
+        tools:ignore="HardcodedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
