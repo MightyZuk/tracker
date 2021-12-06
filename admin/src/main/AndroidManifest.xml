@@ -11,10 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tracker"
         tools:ignore="AllowBackup">
-        <activity android:name=".EmployeeInfo"/>
-        <activity android:name=".EmployeeDetails"/>
-        <activity android:name=".TravelDetails"/>
-        <activity android:name=".AddEmployee"/>
+        <activity
+            android:name=".OtpVerification"
+            android:exported="false" />
+        <activity android:name=".EmployeeInfo" />
+        <activity android:name=".EmployeeDetails" />
+        <activity android:name=".TravelDetails" />
+        <activity android:name=".AddEmployee"
+            android:parentActivityName=".MainPage"/>
         <activity
             android:name=".MainPage"
             android:exported="false" />
