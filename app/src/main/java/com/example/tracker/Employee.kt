@@ -23,6 +23,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
         val employeeAdapter = ClientListAdapter(this)
         binding.clientList.adapter = employeeAdapter
+
         binding.goForVisit.setOnClickListener(this)
         binding.refreshClient.setOnRefreshListener {
             binding.refreshClient.isRefreshing = false

@@ -18,6 +18,7 @@ class ClientListAdapter(private val context: Context): RecyclerView.Adapter<Clie
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+
     }
 
     override fun getItemCount(): Int {
