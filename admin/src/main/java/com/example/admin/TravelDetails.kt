@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 class TravelDetails : AppCompatActivity(),OnMapReadyCallback {
 
     private lateinit var binding: ActivityTravelDetailsBinding
-    private lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +30,6 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     }
 
