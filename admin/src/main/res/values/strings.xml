@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">admin</string>
+    <string name="google_map_key" translatable="false">
+        AIzaSyCtFiLyzGtC47l1DGCSAJBMePdTb32G668
+    </string>
+
 </resources>
