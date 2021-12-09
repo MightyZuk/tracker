@@ -1,6 +1,7 @@
 package com.example.admin
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,12 +22,16 @@ class OtpVerification : AppCompatActivity() {
         val id = Random.nextInt(100000,999999)
         val password = Random.nextInt(100000,999999)
         val name = intent.getStringExtra("name")
+        val number = intent.getStringExtra("number")
+        val image = intent.extras?.getParcelable<Bitmap>("image")
 
         binding.verify.setOnClickListener {
-            Intent(this,AddEmployee::class.java).also {
-                it.putExtra("id",id.toString())
-                it.putExtra("password",password.toString())
+            Intent(this,EmployeeGeneratedDetails::class.java).also {
+                it.putExtra("id",id)
+                it.putExtra("password",password)
                 it.putExtra("name",name.toString())
+                it.putExtra("number",number.toString())
+                it.putExtra("image",image)
                 startActivity(it)
             }
         }

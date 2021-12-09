@@ -11,12 +11,12 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:src="@mipmap/ic_launcher"
             android:id="@+id/clientsImage"
-            android:layout_marginTop="40dp"
-            android:layout_centerHorizontal="true"
             android:layout_width="150dp"
-            android:layout_height="150dp"/>
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/ic_launcher" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/takePicture"

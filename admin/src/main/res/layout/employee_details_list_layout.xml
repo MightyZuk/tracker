@@ -48,7 +48,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:src="@color/black"
-            android:layout_marginStart="255dp"
+            android:layout_marginStart="245dp"
             android:layout_gravity="center_vertical"
             android:layout_width="60dp"
             android:layout_height="60dp"/>

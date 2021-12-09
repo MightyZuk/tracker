@@ -2,10 +2,13 @@ package com.example.admin
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Html
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.NavUtils
 import com.example.admin.databinding.ActivityAddEmployeeBinding
@@ -15,6 +18,8 @@ import kotlin.random.nextInt
 class AddEmployee : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddEmployeeBinding
+    private val imageId : Int = 12
+    private lateinit var image : Bitmap
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,20 +30,10 @@ class AddEmployee : AppCompatActivity() {
         binding = ActivityAddEmployeeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        val id = intent.getStringExtra("id")
-        val pass = intent.getStringExtra("password")
-        val name = intent.getStringExtra("name")
-
-        if (id != null && pass != null){
-            binding.id.visibility = View.VISIBLE
-            binding.password.visibility = View.VISIBLE
-            binding.names.visibility = View.VISIBLE
-            binding.names.text = "$name your"
-            binding.id.text = "id: $id"
-            binding.password.text = "password: $pass"
+        binding.takePicture.setOnClickListener {
+            val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(camera,imageId)
         }
-
 
         binding.register.setOnClickListener {
             when{
@@ -62,17 +57,30 @@ class AddEmployee : AppCompatActivity() {
                     Toast.makeText(this,"Otp has been sent to your registered number",Toast.LENGTH_SHORT).show()
                     Intent(this,OtpVerification::class.java).also {
                         it.putExtra("name",binding.name.text.toString())
+                        it.putExtra("number",binding.number.text.toString())
+                        it.putExtra("image",image)
                         startActivity(it)
                     }
                 }
 
             }
         }
+
     }
 
     override fun onBackPressed() {
         NavUtils.navigateUpFromSameTask(this)
         super.onBackPressed()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (requestCode == imageId){
+            image = data?.extras!!.get("data") as Bitmap
+            binding.employeeImage.setImageBitmap(image)
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 }

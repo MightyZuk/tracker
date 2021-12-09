@@ -6,6 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".AddEmployee">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/employeeImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.096" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/takePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/secular_one"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintVertical_bias="0"
+        android:text="take a picture"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/employeeImage"
+        app:layout_constraintStart_toStartOf="@+id/employeeImage"
+        app:layout_constraintTop_toBottomOf="@+id/employeeImage"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        tools:ignore="HardcodedText" />
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -15,12 +52,12 @@
         android:padding="5dp"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="3dp"
-        app:startIconDrawable="@drawable/ic_person"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102"
+        app:layout_constraintTop_toBottomOf="@+id/takePicture"
+        app:layout_constraintVertical_bias="0.053"
+        app:startIconDrawable="@drawable/ic_person"
         tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -28,45 +65,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/secular_one"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20sp"
             android:inputType="text"
             android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:hint="Number"
         android:padding="5dp"
-        app:startIconDrawable="@drawable/phone"
-        app:prefixTextColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="3dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
         app:layout_constraintVertical_bias="0.05"
+        app:prefixTextColor="@color/black"
+        app:startIconDrawable="@drawable/phone"
         tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
             android:id="@+id/number"
-            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/secular_one"
+            android:inputType="phone"
             android:maxLength="10"
+            android:paddingStart="20dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:inputType="phone"
-            android:fontFamily="@font/secular_one"
-            android:layout_height="match_parent"
-            android:paddingStart="20dp"
+            android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -90,58 +127,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintVertical_bias="0.158"
-        tools:ignore="HardcodedText" />
-
-    <TextView
-        android:id="@+id/names"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/secular_one"
-        android:text="your"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register"
-        app:layout_constraintVertical_bias="0.241"
-        tools:ignore="HardcodedText" />
-
-    <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/secular_one"
-        android:text="id : 583495"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/names"
-        app:layout_constraintStart_toStartOf="@+id/names"
-        app:layout_constraintTop_toBottomOf="@+id/names"
-        app:layout_constraintVertical_bias="0.081"
-        tools:ignore="HardcodedText" />
-
-    <TextView
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/secular_one"
-        android:text="password : 583495"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/id"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="@+id/id"
-        app:layout_constraintTop_toBottomOf="@+id/id"
-        app:layout_constraintVertical_bias="0.065"
         tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
