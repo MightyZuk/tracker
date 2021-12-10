@@ -80,4 +80,5 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
             permissionLauncher.launch(requests.toTypedArray())
         }
     }
+
 }
