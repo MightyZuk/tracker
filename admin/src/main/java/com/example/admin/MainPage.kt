@@ -1,16 +1,24 @@
 package com.example.admin
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import android.text.Html
 import android.view.View
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.admin.databinding.ActivityMainPageBinding
+import com.google.android.material.button.MaterialButton
 
 class MainPage : AppCompatActivity(), View.OnClickListener {
 
@@ -18,7 +26,9 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
     private var isLocationPermissionGranted = false
     private var isCameraPermissionGranted = false
     private var isSmsPermissionGranted = false
+    private lateinit var locationManager: LocationManager
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>admin</font>")
@@ -27,6 +37,7 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
 
         binding.addEmployee.setOnClickListener(this)
         binding.employeeDetails.setOnClickListener(this)
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
                 permission ->
@@ -36,6 +47,8 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
         }
 
         runtimePermission()
+
+        Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
     }
 
@@ -78,6 +91,23 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
         }
         if (requests.isNotEmpty()){
             permissionLauncher.launch(requests.toTypedArray())
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun checkGPS(){
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialog)
+            dialog.create()
+            dialog.show()
+            dialog.setCancelable(false)
+            dialog.findViewById<TextView>(R.id.title).text = "Please turn on GPS"
+            dialog.findViewById<MaterialButton>(R.id.ok).setOnClickListener {
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivityForResult(intent,12)
+                dialog.dismiss()
+            }
         }
     }
 
