@@ -25,6 +25,7 @@
 
     <EditText
         android:id="@+id/uniqueId"
+        android:maxLength="6"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:background="@drawable/get_in_back"
@@ -53,6 +54,7 @@
         android:hint="password"
         android:paddingVertical="17dp"
         android:textStyle="bold"
+        android:maxLength="6"
         android:foregroundGravity="center_vertical"
         android:fontFamily="@font/secular_one"
         android:paddingStart="30dp"
