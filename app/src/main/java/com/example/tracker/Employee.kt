@@ -6,10 +6,15 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import android.text.Html
 import android.view.View
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,12 +31,15 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private var isLocationPermissionGranted = false
     private var isCameraPermissionGranted = false
     private var isSmsPermissionGranted = false
+    private lateinit var locationManager: LocationManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEmployeeBinding.inflate(layoutInflater)
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Employee</font>")
         setContentView(binding.root)
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permission ->
@@ -41,6 +49,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         }
 
         runtimePermission()
+        Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
         val employeeAdapter = ClientListAdapter(this)
         binding.clientList.adapter = employeeAdapter
@@ -100,6 +109,23 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         }
         if (requests.isNotEmpty()){
             permissionLauncher.launch(requests.toTypedArray())
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun checkGPS(){
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialog)
+            dialog.create()
+            dialog.show()
+            dialog.setCancelable(false)
+            dialog.findViewById<TextView>(R.id.title).text = "Please turn on GPS"
+            dialog.findViewById<MaterialButton>(R.id.ok).setOnClickListener {
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivityForResult(intent,12)
+                dialog.dismiss()
+            }
         }
     }
 }
