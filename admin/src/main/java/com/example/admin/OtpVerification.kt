@@ -1,10 +1,12 @@
 package com.example.admin
 
+import android.content.ContextParams
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.StringRequest
@@ -46,8 +48,10 @@ class OtpVerification : AppCompatActivity() {
         val url = "http://192.168.1.49/Employee/putData.php"
 
         val request = StringRequest(Request.Method.POST,url,
-            {},
-            {})
+            {Toast.makeText(this,"Data inserted",Toast.LENGTH_SHORT).show()},
+            {Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show() })
+
+
         Volley.newRequestQueue(this).add(request)
     }
 }
