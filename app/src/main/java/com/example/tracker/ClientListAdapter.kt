@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.databinding.EmployeeClientsBinding
 
-class ClientListAdapter(private val context: Context): RecyclerView.Adapter<ClientListAdapter.ItemViewHolder>() {
+class ClientListAdapter(private val context: Context,private val dataList: ArrayList<EmployeeData>)
+    : RecyclerView.Adapter<ClientListAdapter.ItemViewHolder>() {
 
     private lateinit var binding: EmployeeClientsBinding
 
@@ -18,11 +19,17 @@ class ClientListAdapter(private val context: Context): RecyclerView.Adapter<Clie
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val current = dataList[position]
+
+        binding.clientName.text = current.name
+        binding.purpose.text = current.id.toString()
+        binding.distanceTravelled.text = current.password.toString()
+        binding.destinationLocation.text = current.number.toString()
 
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return dataList.size
     }
 
 

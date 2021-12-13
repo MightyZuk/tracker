@@ -3,6 +3,7 @@ package com.example.tracker
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,15 +14,30 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.tracker.databinding.ActivityEmployeeBinding
 import com.google.android.material.button.MaterialButton
+import org.json.JSONArray
+import java.io.StringReader
+import java.lang.reflect.Method
+import com.android.volley.DefaultRetryPolicy
+import com.google.android.gms.common.api.Api
+import org.json.JSONObject
+
 
 class Employee : AppCompatActivity(), View.OnClickListener {
 
@@ -32,8 +48,11 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private var isCameraPermissionGranted = false
     private var isSmsPermissionGranted = false
     private lateinit var locationManager: LocationManager
+    private lateinit var dataList: ArrayList<EmployeeData>
 
 
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEmployeeBinding.inflate(layoutInflater)
@@ -41,6 +60,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
+        dataList = ArrayList()
+        fetchDataFromServer()
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permission ->
             isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: isLocationPermissionGranted
@@ -51,11 +72,13 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         runtimePermission()
         Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
-        val employeeAdapter = ClientListAdapter(this)
+        val employeeAdapter = ClientListAdapter(this,dataList)
         binding.clientList.adapter = employeeAdapter
 
         binding.goForVisit.setOnClickListener(this)
         binding.refreshClient.setOnRefreshListener {
+            dataList.clear()
+            fetchDataFromServer()
             binding.refreshClient.isRefreshing = false
         }
     }
@@ -127,5 +150,35 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
         }
+    }
+
+    private fun fetchDataFromServer(){
+        val url = "http://192.168.1.49/Employee/getData.php"
+
+        val request = StringRequest(Request.Method.GET,url,
+            {
+                val array = JSONArray(it)
+
+                for (i in 0 until array.length()){
+                    val jsonObject = array.getJSONObject(i)
+                    val id = jsonObject.getInt("id")
+                    val password = jsonObject.getInt("password")
+                    val name = jsonObject.getString("name")
+                    val number = jsonObject.getInt("number")
+
+                    val employeeData = EmployeeData(id,password,name,number)
+                    Log.d("request: ",employeeData.toString())
+
+
+                    dataList.add(employeeData)
+                }
+                val employeeAdapter = ClientListAdapter(this,dataList)
+                binding.clientList.adapter = employeeAdapter
+            },
+            {
+                Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+            })
+
+        Volley.newRequestQueue(this).add(request)
     }
 }

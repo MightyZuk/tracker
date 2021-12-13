@@ -5,6 +5,10 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.android.volley.Request
+import com.android.volley.toolbox.RequestFuture
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.example.admin.databinding.ActivityOtpVerificationBinding
 import kotlin.random.Random
@@ -34,6 +38,16 @@ class OtpVerification : AppCompatActivity() {
                 it.putExtra("image",image)
                 startActivity(it)
             }
+            setDataToServer(id,password,name,number,image)
         }
+    }
+
+    private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: Bitmap?) {
+        val url = "http://192.168.1.49/Employee/putData.php"
+
+        val request = StringRequest(Request.Method.POST,url,
+            {},
+            {})
+        Volley.newRequestQueue(this).add(request)
     }
 }
