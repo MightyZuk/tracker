@@ -3,17 +3,21 @@ package com.example.admin
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -50,6 +54,11 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
 
         Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
+        if (!checkInternet()){
+            Toast.makeText(this,"Please connect to Internet",Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this,"You are live now",Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onClick(v: View?) {
@@ -111,4 +120,10 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun checkInternet(): Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null
+
+    }
 }

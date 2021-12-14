@@ -153,7 +153,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun fetchDataFromServer(){
-        val url = "http://192.168.1.49/Employee/getData.php"
+        val url = "http:// 192.168.1.49/Employee/getData.php"
 
         val request = StringRequest(Request.Method.GET,url,
             {
@@ -176,7 +176,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 binding.clientList.adapter = employeeAdapter
             },
             {
-                Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Message: ${it.message}",Toast.LENGTH_SHORT).show()
+                Log.d("text",it.message.toString())
             })
 
         Volley.newRequestQueue(this).add(request)

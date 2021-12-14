@@ -3,8 +3,12 @@ package com.example.admin
 import android.content.ContextParams
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.android.volley.Request
@@ -13,6 +17,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.example.admin.databinding.ActivityOtpVerificationBinding
+import java.io.ByteArrayOutputStream
 import kotlin.random.Random
 
 class OtpVerification : AppCompatActivity() {
@@ -29,7 +34,8 @@ class OtpVerification : AppCompatActivity() {
         val password = Random.nextInt(100000,999999)
         val name = intent.getStringExtra("name")
         val number = intent.getStringExtra("number")
-        val image = intent.extras?.getParcelable<Bitmap>("image")
+        val bitmapImage = intent.extras?.getParcelable<Bitmap>("image")
+        val image = bitmapToString(bitmapImage!!)
 
         binding.verify.setOnClickListener {
             Intent(this,EmployeeGeneratedDetails::class.java).also {
@@ -37,21 +43,46 @@ class OtpVerification : AppCompatActivity() {
                 it.putExtra("password",password)
                 it.putExtra("name",name.toString())
                 it.putExtra("number",number.toString())
-                it.putExtra("image",image)
+                it.putExtra("image",bitmapImage)
                 startActivity(it)
             }
             setDataToServer(id,password,name,number,image)
         }
     }
 
-    private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: Bitmap?) {
+    private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String?) {
         val url = "http://192.168.1.49/Employee/putData.php"
 
-        val request = StringRequest(Request.Method.POST,url,
-            {Toast.makeText(this,"Data inserted",Toast.LENGTH_SHORT).show()},
-            {Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show() })
-
-
+        val request = object: StringRequest(Method.POST,url,
+            {
+                if (it.equals("Data Inserted Successfully",true)){
+                    Toast.makeText(this,"Data Inserted",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+                }
+            },
+            {
+                Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+            })
+        {
+            override fun getParams(): MutableMap<String, String> {
+                val map = HashMap<String,String>()
+                map["id"] = id.toString()
+                map["password"] = password.toString()
+                map["name"] = name!!
+                map["image"] = image!!
+                map["number"] = number!!
+                return map
+            }
+        }
         Volley.newRequestQueue(this).add(request)
+    }
+
+    private fun bitmapToString(image: Bitmap): String{
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream)
+        val bytesOfImage = byteArrayOutputStream.toByteArray()
+        val encodedImageString: String = Base64.encodeToString(bytesOfImage, Base64.DEFAULT)
+        return encodedImageString
     }
 }
