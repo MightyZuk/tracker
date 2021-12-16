@@ -41,7 +41,6 @@ class GetIn : AppCompatActivity() {
                 }
                 else -> {
                     checkLoginInfo()
-                    startActivity(Intent(this,Employee::class.java))
                 }
             }
         }
@@ -54,13 +53,14 @@ class GetIn : AppCompatActivity() {
     }
 
     private fun checkLoginInfo(){
-        val url = "http:// 192.168.1.7/Employee/getIn.php"
+        val url = "http://192.168.1.7/Employee/getIn.php"
 
         val request = StringRequest(Request.Method.GET,url,
             {
                 Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this,Employee::class.java))
             },
-            {Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()})
+            {Toast.makeText(this,"Invalid credentials",Toast.LENGTH_SHORT).show()})
 
         Volley.newRequestQueue(this).add(request)
     }

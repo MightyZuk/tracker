@@ -6,5 +6,6 @@ data class EmployeeData(
     val id: Int,
     val password: Int,
     val name: String,
-    val number: Int
+    val number: Int,
+    val image: String
 )

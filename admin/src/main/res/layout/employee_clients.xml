@@ -74,6 +74,7 @@
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/clientImage"
             android:layout_marginStart="245dp"
             android:background="@color/black"
             android:layout_marginTop="-15dp"

@@ -153,7 +153,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun fetchDataFromServer(){
-        val url = "http:// 192.168.1.49/Employee/getData.php"
+        val url = "http://192.168.1.7/Employee/getData.php"
 
         val request = StringRequest(Request.Method.GET,url,
             {
@@ -165,10 +165,10 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                     val password = jsonObject.getInt("password")
                     val name = jsonObject.getString("name")
                     val number = jsonObject.getInt("number")
+                    val image = jsonObject.getString("image")
 
-                    val employeeData = EmployeeData(id,password,name,number)
+                    val employeeData = EmployeeData(id,password,name,number,image)
                     Log.d("request: ",employeeData.toString())
-
 
                     dataList.add(employeeData)
                 }
