@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import android.widget.ViewAnimator
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -51,7 +53,8 @@ class EmployeeDetails : AppCompatActivity() {
     }
 
     private fun getDataFromServer(){
-        val url = "http://192.168.1.49/Employee/getData.php"
+//        val url = "http://192.168.1.49/Employee/getData.php" //intern
+        val url = "http://192.168.1.7/Employee/getData.php"
         val request = StringRequest(
             Request.Method.GET,url,
             {

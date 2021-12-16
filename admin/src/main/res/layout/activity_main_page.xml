@@ -56,26 +56,26 @@
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="142dp"
-        app:cardBackgroundColor="#B6B6B6"
         android:elevation="15dp"
         android:foreground="@drawable/card_background"
+        app:cardBackgroundColor="#B6B6B6"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.007"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView1"
-        app:layout_constraintVertical_bias="0.069">
+        app:layout_constraintVertical_bias="0.07999998">
 
         <TextView
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:text="Employee Details"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="23sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
@@ -96,5 +96,50 @@
 
 
     </androidx.cardview.widget.CardView>
+
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/cardView3"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="142dp"-->
+<!--        android:elevation="15dp"-->
+<!--        android:foreground="@drawable/card_background"-->
+<!--        app:cardBackgroundColor="#B6B6B6"-->
+<!--        app:cardCornerRadius="10dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/cardView2"-->
+<!--        app:layout_constraintHorizontal_bias="1.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/cardView2"-->
+<!--        app:layout_constraintVertical_bias="0.14">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:text="Delete Employee"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="23sp"-->
+<!--            android:textStyle="bold"-->
+<!--            tools:ignore="HardcodedText" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/deleteEmployee"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|end"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:text="Delete"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/black"-->
+<!--            app:cornerRadius="20dp"-->
+<!--            app:strokeWidth="1dp"-->
+<!--            tools:ignore="HardcodedText" />-->
+
+<!--    </androidx.cardview.widget.CardView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

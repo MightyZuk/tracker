@@ -1,21 +1,13 @@
 package com.example.admin
 
-import android.content.ContextParams
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
-import android.view.View
 import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.toolbox.RequestFuture
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.example.admin.databinding.ActivityOtpVerificationBinding
 import java.io.ByteArrayOutputStream
 import kotlin.random.Random
@@ -51,14 +43,14 @@ class OtpVerification : AppCompatActivity() {
     }
 
     private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String?) {
-        val url = "http://192.168.1.49/Employee/putData.php"
-
+//        val url = "http://192.168.1.49/Employee/putData.php"
+        val url = "http://192.168.1.7/Employee/putData.php"
         val request = object: StringRequest(Method.POST,url,
             {
                 if (it.equals("Data Inserted Successfully",true)){
                     Toast.makeText(this,"Data Inserted",Toast.LENGTH_SHORT).show()
                 }else{
-                    Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"failed to insert data",Toast.LENGTH_SHORT).show()
                 }
             },
             {

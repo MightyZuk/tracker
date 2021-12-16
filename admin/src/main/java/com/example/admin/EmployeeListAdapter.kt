@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.RoundedCorner
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.admin.databinding.EmployeeDetailsListLayoutBinding
 
 class EmployeeListAdapter(private val context: Context,private val dataList: ArrayList<EmployeeModel>):
@@ -35,7 +38,11 @@ class EmployeeListAdapter(private val context: Context,private val dataList: Arr
         val current = dataList[position]
         binding.employeeName.text = current.name
         binding.employeeId.text = "id: ${current.id}"
-        Glide.with(context).asBitmap().load(current.image).into(binding.employeeImage)
+        Glide.with(context).asBitmap().load(current.image)
+            .fitCenter()
+            .centerInside()
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
+            .into(binding.employeeImage)
 
         binding.employeeCard.setOnClickListener {
             val intent = Intent(context,EmployeeInfo::class.java)

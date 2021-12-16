@@ -45,6 +45,7 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback {
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        binding.employeeName.text = intent.getStringExtra("emp_name")
 
     }
 

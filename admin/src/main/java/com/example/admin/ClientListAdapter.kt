@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.databinding.EmployeeClientsBinding
 
-class ClientListAdapter(private val context: Context):
+class ClientListAdapter(private val context: Context,private val name: String):
     RecyclerView.Adapter<ClientListAdapter.ItemViewHolder>() {
 
     private lateinit var binding: EmployeeClientsBinding
@@ -22,7 +22,9 @@ class ClientListAdapter(private val context: Context):
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
         holder.itemView.setOnClickListener{
-            it.context.startActivity(Intent(context,TravelDetails::class.java))
+            val intent = Intent(context,TravelDetails::class.java)
+            intent.putExtra("emp_name",name)
+            it.context.startActivity(intent)
         }
     }
 

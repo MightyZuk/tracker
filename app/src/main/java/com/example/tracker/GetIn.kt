@@ -3,6 +3,10 @@ package com.example.tracker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.tracker.databinding.ActivityGetInBinding
 
 class GetIn : AppCompatActivity() {
@@ -36,6 +40,7 @@ class GetIn : AppCompatActivity() {
                     binding.password.error = "Please enter valid password"
                 }
                 else -> {
+                    checkLoginInfo()
                     startActivity(Intent(this,Employee::class.java))
                 }
             }
@@ -46,5 +51,17 @@ class GetIn : AppCompatActivity() {
     override fun onBackPressed() {
         finishAffinity()
         super.onBackPressed()
+    }
+
+    private fun checkLoginInfo(){
+        val url = "http:// 192.168.1.7/Employee/getIn.php"
+
+        val request = StringRequest(Request.Method.GET,url,
+            {
+                Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+            },
+            {Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()})
+
+        Volley.newRequestQueue(this).add(request)
     }
 }
