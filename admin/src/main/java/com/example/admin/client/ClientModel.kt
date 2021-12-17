@@ -1,6 +1,7 @@
-package com.example.admin
+package com.example.admin.client
 
 class ClientModel(
+    val employee_id: Int,
     val employee_name: String,
     val client_name: String,
     val purpose: String,

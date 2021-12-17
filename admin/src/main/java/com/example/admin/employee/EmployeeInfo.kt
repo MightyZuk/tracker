@@ -1,4 +1,4 @@
-package com.example.admin
+package com.example.admin.employee
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -6,18 +6,17 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.widget.Toast
-import com.android.volley.Request
 import com.android.volley.Request.Method.GET
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.admin.client.ClientListAdapter
+import com.example.admin.client.ClientModel
+import com.example.admin.R
 import com.example.admin.databinding.ActivityEmployeeInfoBinding
-import com.google.android.gms.common.api.Api
 import org.json.JSONArray
-import org.json.JSONObject
-import java.lang.reflect.Method
 
 class EmployeeInfo : AppCompatActivity() {
 
@@ -62,7 +61,8 @@ class EmployeeInfo : AppCompatActivity() {
     }
 
     private fun getClientDataFromServer(){
-        val url = "http://192.168.1.7/Employee/getClientData.php"
+        val url = "http://192.168.1.49/Employee/getClientData.php"
+//        val url = "http://192.168.1.7/Employee/getClientData.php"  //home
         val request = StringRequest(GET,url,
             {
                 val array = JSONArray(it)

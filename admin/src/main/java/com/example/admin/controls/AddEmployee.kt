@@ -1,12 +1,11 @@
-package com.example.admin
+package com.example.admin.controls
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -14,23 +13,17 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Html
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.admin.R
 import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.google.android.material.button.MaterialButton
-import java.security.Permissions
-import java.util.jar.Manifest
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 class AddEmployee : AppCompatActivity() {
 
@@ -90,13 +83,7 @@ class AddEmployee : AppCompatActivity() {
                     binding.number.error = "Please enter a valid number"
                 }
                 else -> {
-                    Toast.makeText(this,"Otp has been sent to your registered number",Toast.LENGTH_SHORT).show()
-                    Intent(this,OtpVerification::class.java).also {
-                        it.putExtra("name",binding.name.text.toString())
-                        it.putExtra("number",binding.number.text.toString())
-                        it.putExtra("image",image)
-                        startActivity(it)
-                    }
+                    checkDataFromServer(binding.number.text.toString())
                 }
 
             }
@@ -107,6 +94,37 @@ class AddEmployee : AppCompatActivity() {
     override fun onBackPressed() {
         NavUtils.navigateUpFromSameTask(this)
         super.onBackPressed()
+    }
+
+    private fun checkDataFromServer(number: String){
+        val url = "http://192.168.1.49/Employee/checkNumberExists.php"
+
+        val request = object: StringRequest(Method.POST,url,
+            {
+                if (!it.equals("user already exists",true)){
+                    Intent(this, OtpVerification::class.java).also { intent ->
+                        intent.putExtra("name",binding.name.text.toString())
+                        intent.putExtra("number",binding.number.text.toString())
+                        intent.putExtra("image",image)
+                        startActivity(intent)
+                    }
+                    Toast.makeText(this,"Otp has been sent to your registered number",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"User already exists",Toast.LENGTH_SHORT).show()
+                }
+            },
+            {
+                Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()
+            })
+        {
+            override fun getParams(): MutableMap<String, String> {
+                val map = HashMap<String,String>()
+                map["number"] = number
+                return map
+            }
+        }
+        Volley.newRequestQueue(this).add(request)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

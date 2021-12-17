@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,8 @@ import android.os.Looper
 import android.provider.Settings
 import android.text.Html
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -23,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -35,6 +39,9 @@ import org.json.JSONArray
 import java.io.StringReader
 import java.lang.reflect.Method
 import com.android.volley.DefaultRetryPolicy
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.api.Api
 import org.json.JSONObject
 
@@ -48,11 +55,11 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private var isCameraPermissionGranted = false
     private var isSmsPermissionGranted = false
     private lateinit var locationManager: LocationManager
-    private lateinit var dataList: ArrayList<EmployeeData>
+    private lateinit var dataList: ArrayList<EmployeeModel>
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
-
-
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEmployeeBinding.inflate(layoutInflater)
@@ -61,7 +68,10 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         dataList = ArrayList()
-        fetchDataFromServer()
+        sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
+        fetchClientDataFromServer()
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permission ->
             isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: isLocationPermissionGranted
@@ -78,9 +88,27 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         binding.goForVisit.setOnClickListener(this)
         binding.refreshClient.setOnRefreshListener {
             dataList.clear()
-            fetchDataFromServer()
+            fetchClientDataFromServer()
             binding.refreshClient.isRefreshing = false
         }
+
+        binding.employeeId.text = "id: ${sharedPreferences.getString("id",null)}"
+        binding.employeeName.text = sharedPreferences.getString("name",null)
+        Glide.with(this).asBitmap().load(sharedPreferences.getString("image",null))
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
+            .into(binding.employeeImage)
+
+        binding.clientList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy < 0 && !binding.goForVisit.isShown) binding.goForVisit.show()
+                else if (dy > 0 && binding.goForVisit.isShown) binding.goForVisit.hide()
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCREEN_STATE_ON) binding.goForVisit.show()
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     override fun onClick(v: View?) {
@@ -100,7 +128,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         dialog.show()
         dialog.findViewById<MaterialButton>(R.id.submit).setOnClickListener{
             dialog.dismiss()
-            startActivity(Intent(this, Form::class.java))
+            startActivity(Intent(this,Form::class.java))
         }
     }
 
@@ -152,9 +180,10 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun fetchDataFromServer(){
-        val url = "http://192.168.1.7/Employee/getData.php"
-
+    @SuppressLint("SetTextI18n")
+    private fun fetchClientDataFromServer(){
+//        val url = "http://192.168.1.7/Employee/getData.php"//home
+        val url = "http://192.168.1.49/Employee/getData.php" //intern
         val request = StringRequest(Request.Method.GET,url,
             {
                 val array = JSONArray(it)
@@ -163,16 +192,21 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                     val jsonObject = array.getJSONObject(i)
                     val id = jsonObject.getInt("id")
                     val password = jsonObject.getInt("password")
+//                    val employeeName = jsonObject.getString("password")
                     val name = jsonObject.getString("name")
                     val number = jsonObject.getInt("number")
                     val image = jsonObject.getString("image")
+//                    val initial = jsonObject.getInt("initial_location")
+//                    val final = jsonObject.getInt("final_location")
+//                    val purpose = jsonObject.getString("purpose")
+//                    val amount = jsonObject.getInt("amount")
 
-                    val employeeData = EmployeeData(id,password,name,number,image)
-                    Log.d("request: ",employeeData.toString())
+                    val client = EmployeeModel(id,password,name, image, number)
 
-                    dataList.add(employeeData)
+                    dataList.add(client)
                 }
                 val employeeAdapter = ClientListAdapter(this,dataList)
+                binding.numberOfVisits.text = "Number of Visits: ${dataList.size}"
                 binding.clientList.adapter = employeeAdapter
             },
             {
@@ -181,5 +215,21 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             })
 
         Volley.newRequestQueue(this).add(request)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.signOut ->{
+                editor.putBoolean("isLogin",false)
+                editor.apply()
+                startActivity(Intent(this,GetIn::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.admin
+package com.example.admin.controls
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -14,14 +14,15 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.example.admin.R
 import com.example.admin.databinding.ActivityMainPageBinding
+import com.example.admin.employee.EmployeeDetails
 import com.google.android.material.button.MaterialButton
 
 class MainPage : AppCompatActivity(), View.OnClickListener {
@@ -56,18 +57,16 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
 
         if (!checkInternet()){
             Toast.makeText(this,"Please connect to Internet",Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this,"You are live now",Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.addEmployee -> {
-                startActivity(Intent(this,AddEmployee::class.java))
+                startActivity(Intent(this, AddEmployee::class.java))
             }
             R.id.employeeDetails -> {
-                startActivity(Intent(this,EmployeeDetails::class.java))
+                startActivity(Intent(this, EmployeeDetails::class.java))
             }
         }
     }

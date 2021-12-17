@@ -1,4 +1,4 @@
-package com.example.admin
+package com.example.admin.employee
 
 class EmployeeModel(
     val id: Int,

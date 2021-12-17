@@ -1,40 +1,31 @@
-package com.example.admin
+package com.example.admin.employee
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.text.Html
-import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import com.example.admin.R
 import com.example.admin.databinding.ActivityTravelDetailsBinding
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
-import org.w3c.dom.Text
 
 class TravelDetails : AppCompatActivity(),OnMapReadyCallback {
 
     private lateinit var binding: ActivityTravelDetailsBinding
     private lateinit var locationManager: LocationManager
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Travel Details</font>")
@@ -48,8 +39,8 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback {
         binding.employeeName.text = intent.getStringExtra("emp_name")
         binding.clientName.text = intent.getStringExtra("client_name")
         binding.purpose.text = intent.getStringExtra("purpose")
-        binding.initialLocation.text = intent.getStringExtra("initial")
-        binding.destinationLocation.text = intent.getStringExtra("final")
+        binding.initialLocation.text = "start: "+intent.getStringExtra("initial")
+        binding.destinationLocation.text = "end: " +intent.getStringExtra("final")
 
     }
 

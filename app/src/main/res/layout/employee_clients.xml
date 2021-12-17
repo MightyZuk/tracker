@@ -75,12 +75,12 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/clientImage"
-            android:layout_marginStart="245dp"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            android:background="@color/black"
+            android:layout_width="55dp"
+            android:layout_height="65dp"
             android:layout_gravity="center_vertical"
-            android:layout_width="60dp"
-            android:layout_height="60dp"/>
+            android:layout_marginStart="245dp"
+            android:background="@color/black"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
     </androidx.cardview.widget.CardView>
 

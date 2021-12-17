@@ -1,12 +1,15 @@
-package com.example.admin
+package com.example.admin.controls
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import androidx.core.app.NavUtils
+import com.example.admin.R
 import com.example.admin.databinding.ActivityEmployeeGeneratedDetailsBinding
+import com.example.admin.employee.EmployeeDetails
 
 class EmployeeGeneratedDetails : AppCompatActivity() {
 
@@ -32,6 +35,10 @@ class EmployeeGeneratedDetails : AppCompatActivity() {
         binding.id.text = "id: $id"
         binding.password.text = "password: $password"
         binding.employeeImage.setImageBitmap(image)
+
+        binding.takeMeToEmployeeList.setOnClickListener {
+            startActivity(Intent(this, EmployeeDetails::class.java))
+        }
     }
 
     override fun onBackPressed() {

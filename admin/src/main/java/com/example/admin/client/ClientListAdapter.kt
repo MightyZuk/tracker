@@ -1,15 +1,11 @@
-package com.example.admin
+package com.example.admin.client
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.RoundedCorner
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.Request
-import com.bumptech.glide.request.RequestOptions
+import com.example.admin.employee.TravelDetails
 import com.example.admin.databinding.EmployeeClientsBinding
 
 class ClientListAdapter(private val context: Context
@@ -36,7 +32,7 @@ class ClientListAdapter(private val context: Context
 //            .load(current.image).into(binding.clientImage)
 
         holder.itemView.setOnClickListener{
-            val intent = Intent(context,TravelDetails::class.java)
+            val intent = Intent(context, TravelDetails::class.java)
             intent.putExtra("emp_name",name)
             intent.putExtra("client_name",current.client_name)
             intent.putExtra("image",current.image)
@@ -51,5 +47,12 @@ class ClientListAdapter(private val context: Context
         return list.size
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
 }

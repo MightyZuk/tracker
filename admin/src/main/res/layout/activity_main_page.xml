@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:padding="15dp"
     android:layout_height="match_parent"
-    tools:context=".MainPage">
+    tools:context=".controls.MainPage">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView1"

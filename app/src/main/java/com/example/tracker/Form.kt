@@ -22,7 +22,12 @@ class Form : AppCompatActivity() {
 
         binding.submit.setOnClickListener {
             Toast.makeText(this,"Client Details has been Regirstered",Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, Employee::class.java))
+            Intent(this, Employee::class.java).also {intent ->
+//                intent.putExtra("")
+//                intent.putExtra("")
+//                intent.putExtra("")
+                startActivity(intent)
+            }
         }
 
         binding.takePicture.setOnClickListener {

@@ -1,11 +1,8 @@
-package com.example.admin
+package com.example.admin.employee
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.RoundedCorner
@@ -13,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.Volley
@@ -21,7 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.admin.databinding.EmployeeDetailsListLayoutBinding
 
-class EmployeeListAdapter(private val context: Context,private val dataList: ArrayList<EmployeeModel>):
+class EmployeeListAdapter(private val context: Context,private val oldList: ArrayList<EmployeeModel>):
     RecyclerView.Adapter<EmployeeListAdapter.ItemViewHolder>(){
 
     private lateinit var binding: EmployeeDetailsListLayoutBinding
@@ -35,7 +33,7 @@ class EmployeeListAdapter(private val context: Context,private val dataList: Arr
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val current = dataList[position]
+        val current = oldList[position]
         binding.employeeName.text = current.name
         binding.employeeId.text = "id: ${current.id}"
         Glide.with(context).asBitmap().load(current.image)
@@ -45,7 +43,7 @@ class EmployeeListAdapter(private val context: Context,private val dataList: Arr
             .into(binding.employeeImage)
 
         binding.employeeCard.setOnClickListener {
-            val intent = Intent(context,EmployeeInfo::class.java)
+            val intent = Intent(context, EmployeeInfo::class.java)
             intent.putExtra("name",current.name)
             intent.putExtra("id",current.id)
             intent.putExtra("image",current.image)
@@ -55,7 +53,15 @@ class EmployeeListAdapter(private val context: Context,private val dataList: Arr
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return oldList.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
 }

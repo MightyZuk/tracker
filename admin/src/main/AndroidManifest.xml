@@ -20,20 +20,22 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".EmployeeGeneratedDetails"
-            android:parentActivityName=".AddEmployee"
+            android:name=".controls.EmployeeGeneratedDetails"
+            android:parentActivityName=".controls.AddEmployee"
             android:exported="false" />
         <activity
-            android:name=".OtpVerification"
+            android:name=".controls.OtpVerification"
             android:exported="false" />
-        <activity android:name=".EmployeeInfo" />
-        <activity android:name=".EmployeeDetails" />
-        <activity android:name=".TravelDetails" />
+        <activity android:name=".employee.EmployeeInfo" />
         <activity
-            android:name=".AddEmployee"
-            android:parentActivityName=".MainPage" />
+            android:name=".employee.EmployeeDetails"
+            android:parentActivityName=".controls.MainPage"/>
+        <activity android:name=".employee.TravelDetails" />
         <activity
-            android:name=".MainPage"
+            android:name=".controls.AddEmployee"
+            android:parentActivityName=".controls.MainPage" />
+        <activity
+            android:name=".controls.MainPage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

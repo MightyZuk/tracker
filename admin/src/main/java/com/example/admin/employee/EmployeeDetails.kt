@@ -1,23 +1,17 @@
-package com.example.admin
+package com.example.admin.employee
 
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
-import android.util.Base64
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import android.widget.ViewAnimator
+import androidx.core.app.NavUtils
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.admin.R
 import com.example.admin.databinding.ActivityEmployeeDetailsBinding
 import org.json.JSONArray
-import java.io.ByteArrayOutputStream
 
 class EmployeeDetails : AppCompatActivity() {
 
@@ -46,15 +40,13 @@ class EmployeeDetails : AppCompatActivity() {
 
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        finish()
-        return super.onSupportNavigateUp()
+    override fun onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this)
+        super.onBackPressed()
     }
-
     private fun getDataFromServer(){
-//        val url = "http://192.168.1.49/Employee/getData.php" //intern
-        val url = "http://192.168.1.7/Employee/getData.php"
+        val url = "http://192.168.1.49/Employee/getData.php" //intern
+//        val url = "http://192.168.1.7/Employee/getData.php" //home
         val request = StringRequest(
             Request.Method.GET,url,
             {

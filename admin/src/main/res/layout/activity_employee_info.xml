@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".EmployeeInfo">
+    tools:context=".employee.EmployeeInfo">
 
     <TextView
         android:id="@+id/employeeName"

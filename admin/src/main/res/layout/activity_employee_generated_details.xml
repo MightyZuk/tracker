@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeGeneratedDetails">
+    tools:context=".controls.EmployeeGeneratedDetails">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/employeeImage"
@@ -85,6 +85,30 @@
         app:layout_constraintStart_toStartOf="@+id/id"
         app:layout_constraintTop_toBottomOf="@+id/id"
         app:layout_constraintVertical_bias="0.048"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/takeMeToEmployeeList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        android:elevation="10dp"
+        android:fontFamily="@font/secular_one"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="17dp"
+        android:text="take me to employee list"
+        app:icon="@drawable/ic_baseline_arrow_forward_24"
+        app:iconGravity="end"
+        android:textAllCaps="false"
+        app:iconTint="@color/white"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintVertical_bias="0.7"
         tools:ignore="HardcodedText" />
 
 

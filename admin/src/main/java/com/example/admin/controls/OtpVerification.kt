@@ -1,9 +1,10 @@
-package com.example.admin
+package com.example.admin.controls
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
@@ -30,7 +31,7 @@ class OtpVerification : AppCompatActivity() {
         val image = bitmapToString(bitmapImage!!)
 
         binding.verify.setOnClickListener {
-            Intent(this,EmployeeGeneratedDetails::class.java).also {
+            Intent(this, EmployeeGeneratedDetails::class.java).also {
                 it.putExtra("id",id)
                 it.putExtra("password",password)
                 it.putExtra("name",name.toString())
@@ -43,14 +44,15 @@ class OtpVerification : AppCompatActivity() {
     }
 
     private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String?) {
-//        val url = "http://192.168.1.49/Employee/putData.php"
-        val url = "http://192.168.1.7/Employee/putData.php"
+        val url = "http://192.168.1.49/Employee/putData.php" //intern
+//        val url = "http://192.168.1.7/Employee/putData.php" //home
         val request = object: StringRequest(Method.POST,url,
             {
                 if (it.equals("Data Inserted Successfully",true)){
                     Toast.makeText(this,"Data Inserted",Toast.LENGTH_SHORT).show()
                 }else{
-                    Toast.makeText(this,"failed to insert data",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"User already exists",Toast.LENGTH_SHORT).show()
+                    Log.d("res: ",it.toString())
                 }
             },
             {
