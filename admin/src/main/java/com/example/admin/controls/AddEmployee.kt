@@ -83,7 +83,7 @@ class AddEmployee : AppCompatActivity() {
                     binding.number.error = "Please enter a valid number"
                 }
                 else -> {
-                    checkDataFromServer(binding.number.text.toString())
+                    checkDataFromServer(binding.number.text.toString(),binding.name.text.toString())
                 }
 
             }
@@ -96,7 +96,7 @@ class AddEmployee : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    private fun checkDataFromServer(number: String){
+    private fun checkDataFromServer(number: String,name: String){
 //        val url = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
         val url = "http://192.168.1.7/Employee/checkNumberExists.php" //home
 
@@ -104,8 +104,8 @@ class AddEmployee : AppCompatActivity() {
             {
                 if (!it.equals("user already exists",true)){
                     Intent(this, OtpVerification::class.java).also { intent ->
-                        intent.putExtra("name",binding.name.text.toString())
-                        intent.putExtra("number",binding.number.text.toString())
+                        intent.putExtra("name",name)
+                        intent.putExtra("number",number)
                         intent.putExtra("image",image)
                         startActivity(intent)
                     }

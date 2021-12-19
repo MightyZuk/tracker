@@ -63,30 +63,35 @@ class EmployeeInfo : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun getClientDataFromServer(){
-        val url = "http://192.168.1.7/Employee/getData.php"//home
+        val url = "http://192.168.1.7/Employee/getClientData.php"//home
 //        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
         val request = object :StringRequest(Method.POST,url,
             {
                 val array = JSONArray(it)
-                for (i in 0 until array.length()){
-                    val jsonObject = array.getJSONObject(i)
-                    val id = jsonObject.getInt("employee_id")
-                    val employeeName = jsonObject.getString("employee_name")
-                    val name = jsonObject.getString("client_name")
-                    val number = jsonObject.getInt("number")
-                    val image = jsonObject.getString("image")
-                    val initial = jsonObject.getInt("initial_location")
-                    val final = jsonObject.getInt("final_location")
-                    val purpose = jsonObject.getString("purpose")
-                    val amount = jsonObject.getInt("amount")
+                if (array.getString(0) == "success"){
+                    Toast.makeText(this,"list is empty",Toast.LENGTH_SHORT).show()
+                }else {
+                    for (i in 0 until array.length()) {
+                        val jsonObject = array.getJSONObject(i)
+                        val id = jsonObject.getInt("employee_id")
+                        val employeeName = jsonObject.getString("employee_name")
+                        val name = jsonObject.getString("client_name")
+                        val number = jsonObject.getInt("number")
+                        val image = jsonObject.getString("image")
+                        val initial = jsonObject.getInt("initial_location")
+                        val final = jsonObject.getInt("final_location")
+                        val purpose = jsonObject.getString("purpose")
+                        val amount = jsonObject.getInt("amount")
 
-                    val client = ClientModel(id,employeeName,name,purpose,amount,initial,final,image,number)
+                        val client = ClientModel(id, employeeName, name, purpose, amount, initial, final, image, number)
 
-                    list.add(client)
+                        list.add(client)
+                    }
+                    val employeeAdapter =
+                        ClientListAdapter(this, list, intent.getStringExtra("name").toString())
+                    binding.visits.text = "Number of Visits: ${list.size}"
+                    binding.clientList.adapter = employeeAdapter
                 }
-                val employeeAdapter = ClientListAdapter(this,list,intent.getStringExtra("name").toString())
-                binding.visits.text = "Number of Visits: ${list.size}"
-                binding.clientList.adapter = employeeAdapter
             },
             {
                 Toast.makeText(this,"Message: ${it.message}",Toast.LENGTH_SHORT).show()

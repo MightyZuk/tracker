@@ -43,7 +43,7 @@
         android:id="@+id/visits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of Visits : 3"
+        android:text="Number of Visits : 0"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"

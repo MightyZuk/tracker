@@ -43,7 +43,7 @@ class OtpVerification : AppCompatActivity() {
         }
     }
 
-    private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String?) {
+    private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String) {
 //        val url = "http://192.168.1.49/Employee/putData.php" //intern
         val url = "http://192.168.1.7/Employee/putData.php" //home
         val request = object: StringRequest(Method.POST,url,
@@ -64,8 +64,8 @@ class OtpVerification : AppCompatActivity() {
                 map["id"] = id.toString()
                 map["password"] = password.toString()
                 map["name"] = name!!
-                map["image"] = image!!
                 map["number"] = number!!
+                map["image"] = image
                 return map
             }
         }

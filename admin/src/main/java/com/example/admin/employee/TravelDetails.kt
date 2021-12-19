@@ -14,6 +14,9 @@ import android.provider.Settings
 import android.text.Html
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.admin.R
 import com.example.admin.databinding.ActivityTravelDetailsBinding
 import com.google.android.gms.maps.GoogleMap
@@ -36,11 +39,15 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback {
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        Glide.with(this).asBitmap()
+            .load(intent.getStringExtra("image"))
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
+            .into(binding.clientImage)
         binding.employeeName.text = intent.getStringExtra("emp_name")
         binding.clientName.text = intent.getStringExtra("client_name")
         binding.purpose.text = intent.getStringExtra("purpose")
-        binding.initialLocation.text = "start: "+intent.getStringExtra("initial")
-        binding.destinationLocation.text = "end: " +intent.getStringExtra("final")
+        binding.initialLocation.text = "start: ${intent.getIntExtra("initial",0)}"
+        binding.destinationLocation.text = "end: ${intent.getIntExtra("final",0)}"
 
     }
 
