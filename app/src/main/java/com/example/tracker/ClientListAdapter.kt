@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.tracker.databinding.EmployeeClientsBinding
 
-class ClientListAdapter(private val context: Context,private val dataList: ArrayList<EmployeeModel>)
+class ClientListAdapter(private val context: Context,private val dataList: ArrayList<ClientModel>)
     : RecyclerView.Adapter<ClientListAdapter.ItemViewHolder>() {
 
     private lateinit var binding: EmployeeClientsBinding
@@ -30,10 +30,10 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = dataList[position]
 
-        binding.clientName.text = current.name
-        binding.purpose.text = "purpose: ${current.id}"
+        binding.clientName.text = current.client_name
+        binding.purpose.text = "purpose: ${current.purpose}"
         binding.distanceTravelled.text = "Travelled distance : 4km"
-        binding.destinationLocation.text = "destination: ${current.id}"
+        binding.destinationLocation.text = "destination: ${current.final_location}"
         Glide.with(context).asBitmap()
             .load(current.image)
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))

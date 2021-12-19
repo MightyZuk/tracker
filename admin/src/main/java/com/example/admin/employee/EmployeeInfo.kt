@@ -11,6 +11,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestOptions
 import com.example.admin.client.ClientListAdapter
 import com.example.admin.client.ClientModel
@@ -60,37 +61,46 @@ class EmployeeInfo : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getClientDataFromServer(){
-        val url = "http://192.168.1.49/Employee/getClientData.php"
-//        val url = "http://192.168.1.7/Employee/getClientData.php"  //home
-        val request = StringRequest(GET,url,
+        val url = "http://192.168.1.7/Employee/getData.php"//home
+//        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
+        val request = object :StringRequest(Method.POST,url,
             {
                 val array = JSONArray(it)
-
-                for (i in 0 until array.length()) {
+                for (i in 0 until array.length()){
                     val jsonObject = array.getJSONObject(i)
+                    val id = jsonObject.getInt("employee_id")
                     val employeeName = jsonObject.getString("employee_name")
                     val name = jsonObject.getString("client_name")
-                    val amount = jsonObject.getInt("amount")
-                    val image = jsonObject.getString("image")
                     val number = jsonObject.getInt("number")
-                    val purpose = jsonObject.getString("purpose")
+                    val image = jsonObject.getString("image")
                     val initial = jsonObject.getInt("initial_location")
                     val final = jsonObject.getInt("final_location")
+                    val purpose = jsonObject.getString("purpose")
+                    val amount = jsonObject.getInt("amount")
 
-                    val clientData = ClientModel(employeeName,name,purpose,amount,initial,final,image,number)
-                    Log.d("request: ", clientData.toString())
+                    val client = ClientModel(id,employeeName,name,purpose,amount,initial,final,image,number)
 
-                    list.add(clientData)
+                    list.add(client)
                 }
-                val clientAdapter = ClientListAdapter(this,list,intent.getStringExtra("name")!!)
-                binding.clientList.setHasFixedSize(true)
-                binding.clientList.adapter = clientAdapter
-
+                val employeeAdapter = ClientListAdapter(this,list,intent.getStringExtra("name").toString())
+                binding.visits.text = "Number of Visits: ${list.size}"
+                binding.clientList.adapter = employeeAdapter
             },
             {
-                Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Message: ${it.message}",Toast.LENGTH_SHORT).show()
+                Log.d("text",it.message.toString())
             })
+        {
+            override fun getParams(): MutableMap<String, String> {
+                val map = HashMap<String,String>()
+                map["employee_id"] = intent.getIntExtra("id",0).toString()
+                map["employee_name"] = intent.getStringExtra("name").toString()
+                return map
+            }
+        }
+
         Volley.newRequestQueue(this).add(request)
     }
 

@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -55,7 +56,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private var isCameraPermissionGranted = false
     private var isSmsPermissionGranted = false
     private lateinit var locationManager: LocationManager
-    private lateinit var dataList: ArrayList<EmployeeModel>
+    private lateinit var dataList: ArrayList<ClientModel>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
@@ -94,7 +95,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
         binding.employeeId.text = "id: ${sharedPreferences.getString("id",null)}"
         binding.employeeName.text = sharedPreferences.getString("name",null)
-        Glide.with(this).asBitmap().load(sharedPreferences.getString("image",null))
+        Glide.with(this).asBitmap().load(sharedPreferences.getString("employee_image",null))
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
             .into(binding.employeeImage)
 
@@ -128,7 +129,11 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         dialog.show()
         dialog.findViewById<MaterialButton>(R.id.submit).setOnClickListener{
             dialog.dismiss()
-            startActivity(Intent(this,Form::class.java))
+            Intent(this,Form::class.java).also { intent ->
+                intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
+                intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
+                startActivity(intent)
+            }
         }
     }
 
@@ -182,37 +187,47 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun fetchClientDataFromServer(){
-//        val url = "http://192.168.1.7/Employee/getData.php"//home
-        val url = "http://192.168.1.49/Employee/getData.php" //intern
-        val request = StringRequest(Request.Method.GET,url,
+        val url = "http://192.168.1.7/Employee/getClientData.php"//home
+//        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
+        val request = object :StringRequest(Method.POST,url,
             {
                 val array = JSONArray(it)
+                if (array.getString(0) == "success"){
+                    Toast.makeText(this,"list is empty",Toast.LENGTH_SHORT).show()
+                }else {
+                    for (i in 0 until array.length()) {
+                        val jsonObject = array.getJSONObject(i)
+                        val id = jsonObject.getInt("employee_id")
+                        val employeeName = jsonObject.getString("employee_name")
+                        val name = jsonObject.getString("client_name")
+                        val number = jsonObject.getInt("number")
+                        val image = jsonObject.getString("image")
+                        val initial = jsonObject.getInt("initial_location")
+                        val final = jsonObject.getInt("final_location")
+                        val purpose = jsonObject.getString("purpose")
+                        val amount = jsonObject.getInt("amount")
 
-                for (i in 0 until array.length()){
-                    val jsonObject = array.getJSONObject(i)
-                    val id = jsonObject.getInt("id")
-                    val password = jsonObject.getInt("password")
-//                    val employeeName = jsonObject.getString("password")
-                    val name = jsonObject.getString("name")
-                    val number = jsonObject.getInt("number")
-                    val image = jsonObject.getString("image")
-//                    val initial = jsonObject.getInt("initial_location")
-//                    val final = jsonObject.getInt("final_location")
-//                    val purpose = jsonObject.getString("purpose")
-//                    val amount = jsonObject.getInt("amount")
+                        val client = ClientModel(id, employeeName, name, purpose, amount, initial, final, image, number)
 
-                    val client = EmployeeModel(id,password,name, image, number)
-
-                    dataList.add(client)
+                        dataList.add(client)
+                    }
+                    val employeeAdapter = ClientListAdapter(this, dataList)
+                    binding.numberOfVisits.text = "Number of Visits: ${dataList.size}"
+                    binding.clientList.adapter = employeeAdapter
                 }
-                val employeeAdapter = ClientListAdapter(this,dataList)
-                binding.numberOfVisits.text = "Number of Visits: ${dataList.size}"
-                binding.clientList.adapter = employeeAdapter
             },
             {
                 Toast.makeText(this,"Message: ${it.message}",Toast.LENGTH_SHORT).show()
                 Log.d("text",it.message.toString())
             })
+        {
+            override fun getParams(): MutableMap<String, String> {
+                val map = HashMap<String,String>()
+                map["employee_id"] = sharedPreferences.getString("id",null).toString()
+                map["employee_name"] = sharedPreferences.getString("name",null).toString()
+                return map
+            }
+        }
 
         Volley.newRequestQueue(this).add(request)
     }

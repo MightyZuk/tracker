@@ -45,8 +45,8 @@ class EmployeeDetails : AppCompatActivity() {
         super.onBackPressed()
     }
     private fun getDataFromServer(){
-        val url = "http://192.168.1.49/Employee/getData.php" //intern
-//        val url = "http://192.168.1.7/Employee/getData.php" //home
+//        val url = "http://192.168.1.49/Employee/getData.php" //intern
+        val url = "http://192.168.1.7/Employee/getData.php" //home
         val request = StringRequest(
             Request.Method.GET,url,
             {

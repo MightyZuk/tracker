@@ -97,7 +97,8 @@ class AddEmployee : AppCompatActivity() {
     }
 
     private fun checkDataFromServer(number: String){
-        val url = "http://192.168.1.49/Employee/checkNumberExists.php"
+//        val url = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
+        val url = "http://192.168.1.7/Employee/checkNumberExists.php" //home
 
         val request = object: StringRequest(Method.POST,url,
             {

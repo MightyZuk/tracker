@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.tracker.databinding.ActivityGetInBinding
@@ -68,7 +67,8 @@ class GetIn : AppCompatActivity() {
     }
 
     private fun checkLoginInfo(id: String,password: String){
-        val url = "http://192.168.1.49/Employee/login.php"
+//        val url = "http://192.168.1.49/Employee/login.php"//intern
+        val url = "http://192.168.1.7/Employee/login.php"  //home
 
         val request = object :StringRequest(Method.POST,url,
             {
@@ -83,7 +83,7 @@ class GetIn : AppCompatActivity() {
 
                     editor.putBoolean("isLogin",true)
                     editor.putString("id",identity)
-                    editor.putString("image",image)
+                    editor.putString("employee_image",image)
                     editor.putString("name",name)
                     editor.apply()
                     Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
