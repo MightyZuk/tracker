@@ -63,8 +63,8 @@ class EmployeeInfo : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun getClientDataFromServer(){
-        val url = "http://192.168.1.7/Employee/getClientData.php"//home
-//        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
+//        val url = "http://192.168.1.7/Employee/getClientData.php"//home
+        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
         val request = object :StringRequest(Method.POST,url,
             {
                 val array = JSONArray(it)

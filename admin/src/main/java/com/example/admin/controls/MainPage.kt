@@ -48,7 +48,7 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
                 permission ->
             isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: isLocationPermissionGranted
             isCameraPermissionGranted = permission[Manifest.permission.CAMERA] ?: isCameraPermissionGranted
-            isSmsPermissionGranted = permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
+            isSmsPermissionGranted = permission[Manifest.permission.SEND_SMS] ?: isSmsPermissionGranted
         }
 
         runtimePermission()
@@ -84,7 +84,7 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
             Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
         isSmsPermissionGranted = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED
+            Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
 
         val requests: MutableList<String> = ArrayList()
 
@@ -95,7 +95,7 @@ class MainPage : AppCompatActivity(), View.OnClickListener {
             requests.add(Manifest.permission.CAMERA)
         }
         if (!isSmsPermissionGranted){
-            requests.add(Manifest.permission.READ_SMS)
+            requests.add(Manifest.permission.SEND_SMS)
         }
         if (requests.isNotEmpty()){
             permissionLauncher.launch(requests.toTypedArray())

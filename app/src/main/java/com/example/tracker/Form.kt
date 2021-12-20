@@ -78,8 +78,8 @@ class Form : AppCompatActivity() {
     private fun putClientDataToServer(employeeId: Int,employeeName: String?,clientName: String?,purpose: String?,
                                       amount: String?,image: String?,initialLocation: String?,finalLocation: String?,
                                       number: String?){
-//        val url = "http://192.168.1.49/Employee/putClientData.php" //intern
-        val url = "http://192.168.1.7/Employee/putClientData.php" //home
+        val url = "http://192.168.1.49/Employee/putClientData.php" //intern
+//        val url = "http://192.168.1.7/Employee/putClientData.php" //home
 
         val request = object: StringRequest(Method.POST,url,
             {

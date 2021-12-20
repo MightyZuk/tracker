@@ -187,8 +187,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun fetchClientDataFromServer(){
-        val url = "http://192.168.1.7/Employee/getClientData.php"//home
-//        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
+//        val url = "http://192.168.1.7/Employee/getClientData.php"//home
+        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
         val request = object :StringRequest(Method.POST,url,
             {
                 val array = JSONArray(it)
@@ -246,5 +246,12 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun startTrackingLocation(){
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
     }
 }

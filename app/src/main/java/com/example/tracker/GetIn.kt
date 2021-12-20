@@ -67,8 +67,8 @@ class GetIn : AppCompatActivity() {
     }
 
     private fun checkLoginInfo(id: String,password: String){
-//        val url = "http://192.168.1.49/Employee/login.php"//intern
-        val url = "http://192.168.1.7/Employee/login.php"  //home
+        val url = "http://192.168.1.49/Employee/login.php"//intern
+//        val url = "http://192.168.1.7/Employee/login.php"  //home
 
         val request = object :StringRequest(Method.POST,url,
             {

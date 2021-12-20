@@ -3,6 +3,7 @@ package com.example.admin.controls
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DownloadManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.telephony.SmsManager
 import android.text.Html
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +26,7 @@ import com.android.volley.toolbox.Volley
 import com.example.admin.R
 import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.google.android.material.button.MaterialButton
+import kotlin.random.Random
 
 class AddEmployee : AppCompatActivity() {
 
@@ -83,6 +86,7 @@ class AddEmployee : AppCompatActivity() {
                     binding.number.error = "Please enter a valid number"
                 }
                 else -> {
+                    sendOtp(binding.number.text.toString())
                     checkDataFromServer(binding.number.text.toString(),binding.name.text.toString())
                 }
 
@@ -97,8 +101,8 @@ class AddEmployee : AppCompatActivity() {
     }
 
     private fun checkDataFromServer(number: String,name: String){
-//        val url = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
-        val url = "http://192.168.1.7/Employee/checkNumberExists.php" //home
+        val url = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
+//        val url = "http://192.168.1.7/Employee/checkNumberExists.php" //home
 
         val request = object: StringRequest(Method.POST,url,
             {
@@ -136,6 +140,12 @@ class AddEmployee : AppCompatActivity() {
         }
 
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun sendOtp(number: String){
+        val otp = Random.nextInt(100000,999999)
+        val intent = PendingIntent.getBroadcast(this,0,Intent("SMS_SENT"),0)
+        SmsManager.getDefault().sendTextMessage(number,null,"Otp is $otp",intent,null)
     }
 
 }
