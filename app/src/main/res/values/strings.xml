@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">user</string>
-    <string name="google_map_key">AIzaSyCtFiLyzGtC47l1DGCSAJBMePdTb32G668</string>
+    <string name="google_map_key" translatable="false">
+        AIzaSyCtFiLyzGtC47l1DGCSAJBMePdTb32G668
+    </string>
+
 </resources>

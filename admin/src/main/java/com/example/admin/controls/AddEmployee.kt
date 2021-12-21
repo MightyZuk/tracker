@@ -24,6 +24,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.admin.R
+import com.example.admin.Url
 import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.google.android.material.button.MaterialButton
 import kotlin.random.Random
@@ -101,10 +102,7 @@ class AddEmployee : AppCompatActivity() {
     }
 
     private fun checkDataFromServer(number: String,name: String){
-        val url = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
-//        val url = "http://192.168.1.7/Employee/checkNumberExists.php" //home
-
-        val request = object: StringRequest(Method.POST,url,
+        val request = object: StringRequest(Method.POST,Url.checkNumber,
             {
                 if (!it.equals("user already exists",true)){
                     Intent(this, OtpVerification::class.java).also { intent ->

@@ -6,8 +6,8 @@ class ClientModel(
     val client_name: String,
     val purpose: String,
     val amount: Int,
-    val initial_location: Int,
-    val final_location: Int,
+    val initial_location: String,
+    val final_location: String,
     val image: String,
     val number: Int
 )

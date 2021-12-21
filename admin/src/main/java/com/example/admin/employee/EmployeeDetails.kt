@@ -10,6 +10,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.admin.R
+import com.example.admin.Url
 import com.example.admin.databinding.ActivityEmployeeDetailsBinding
 import org.json.JSONArray
 
@@ -45,10 +46,8 @@ class EmployeeDetails : AppCompatActivity() {
         super.onBackPressed()
     }
     private fun getDataFromServer(){
-        val url = "http://192.168.1.49/Employee/getData.php" //intern
-//        val url = "http://192.168.1.7/Employee/getData.php" //home
         val request = StringRequest(
-            Request.Method.GET,url,
+            Request.Method.GET,Url.getData,
             {
                 val array = JSONArray(it)
                 if (array.getString(0) == "success"){

@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.admin.client.ClientListAdapter
 import com.example.admin.client.ClientModel
 import com.example.admin.R
+import com.example.admin.Url
 import com.example.admin.databinding.ActivityEmployeeInfoBinding
 import org.json.JSONArray
 
@@ -63,9 +64,7 @@ class EmployeeInfo : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun getClientDataFromServer(){
-//        val url = "http://192.168.1.7/Employee/getClientData.php"//home
-        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
-        val request = object :StringRequest(Method.POST,url,
+        val request = object :StringRequest(Method.POST,Url.getClientData,
             {
                 val array = JSONArray(it)
                 if (array.getString(0) == "success"){
@@ -78,8 +77,8 @@ class EmployeeInfo : AppCompatActivity() {
                         val name = jsonObject.getString("client_name")
                         val number = jsonObject.getInt("number")
                         val image = jsonObject.getString("image")
-                        val initial = jsonObject.getInt("initial_location")
-                        val final = jsonObject.getInt("final_location")
+                        val initial = jsonObject.getString("initial_location")
+                        val final = jsonObject.getString("final_location")
                         val purpose = jsonObject.getString("purpose")
                         val amount = jsonObject.getInt("amount")
 

@@ -8,7 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
+import android.location.LocationRequest
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +28,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +48,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.api.Api
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import org.json.JSONObject
 
 
@@ -59,6 +68,10 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private lateinit var dataList: ArrayList<ClientModel>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var locationRequest: com.google.android.gms.location.LocationRequest
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var location: ArrayList<LatLng>
 
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +82,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         dataList = ArrayList()
+        location = ArrayList()
+        locationRequest  = com.google.android.gms.location.LocationRequest()
         sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -80,6 +95,16 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             isSmsPermissionGranted = permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
         }
 
+        locationCallback = object : LocationCallback(){
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                p0.locations.let {
+                    for (i in it){
+                        location.add(LatLng(i.latitude,i.longitude))
+                    }
+                }
+            }
+        }
         runtimePermission()
         Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
@@ -110,20 +135,24 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
+
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.goForVisit -> {
                 popUp()
+                startTrackingLocation()
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("ResourceType")
     fun popUp(){
         dialog = Dialog(this)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         dialog.setContentView(R.layout.pop_up)
         dialog.create()
         dialog.show()
@@ -187,9 +216,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun fetchClientDataFromServer(){
-//        val url = "http://192.168.1.7/Employee/getClientData.php"//home
-        val url = "http://192.168.1.49/Employee/getClientData.php" //intern
-        val request = object :StringRequest(Method.POST,url,
+        val request = object :StringRequest(Method.POST,Url.getClientData,
             {
                 val array = JSONArray(it)
                 if (array.getString(0) == "success"){
@@ -202,8 +229,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                         val name = jsonObject.getString("client_name")
                         val number = jsonObject.getInt("number")
                         val image = jsonObject.getString("image")
-                        val initial = jsonObject.getInt("initial_location")
-                        val final = jsonObject.getInt("final_location")
+                        val initial = jsonObject.getString("initial_location")
+                        val final = jsonObject.getString("final_location")
                         val purpose = jsonObject.getString("purpose")
                         val amount = jsonObject.getInt("amount")
 
@@ -248,10 +275,20 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
+    @SuppressLint("MissingPermission")
     private fun startTrackingLocation(){
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
+        locationRequest = locationRequest.apply {
+            this.interval = 1000 * 3
+            this.fastestInterval = 1000 * 1
+            this.priority = LocationRequest.QUALITY_HIGH_ACCURACY
+        }
+
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,locationCallback,Looper.getMainLooper()
+        )
     }
+
 }

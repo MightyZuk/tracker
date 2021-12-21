@@ -36,6 +36,8 @@ class EmployeeListAdapter(private val context: Context,private val oldList: Arra
         val current = oldList[position]
         binding.employeeName.text = current.name
         binding.employeeId.text = "id: ${current.id}"
+        binding.employeePassword.text = "password: ${current.password}"
+        binding.employeeNumber.text = "number: +91${current.number}"
         Glide.with(context).asBitmap().load(current.image)
             .fitCenter()
             .centerInside()

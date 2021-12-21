@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.admin.Url
 import com.example.admin.databinding.ActivityOtpVerificationBinding
 import java.io.ByteArrayOutputStream
 import kotlin.random.Random
@@ -44,9 +45,7 @@ class OtpVerification : AppCompatActivity() {
     }
 
     private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String) {
-        val url = "http://192.168.1.49/Employee/putData.php" //intern
-//        val url = "http://192.168.1.7/Employee/putData.php" //home
-        val request = object: StringRequest(Method.POST,url,
+        val request = object: StringRequest(Method.POST,Url.putData,
             {
                 if (it.equals("Data Inserted Successfully",true)){
                     Toast.makeText(this,"Data Inserted",Toast.LENGTH_SHORT).show()
