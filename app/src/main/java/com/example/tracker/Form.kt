@@ -43,31 +43,18 @@ class Form : AppCompatActivity() {
 
         list = ArrayList()
 
-        val locationCallBack = object : LocationCallback(){
-            override fun onLocationResult(p0: LocationResult) {
-                super.onLocationResult(p0)
-                p0.locations.let {
-                    for (i in it){
-                        list.add(LatLng(i.latitude,i.longitude))
-                    }
-                }
-            }
-        }
         binding.clientName.setText(intent.getStringExtra("name"))
         binding.clientPurpose.setText(intent.getStringExtra("purpose"))
 
         binding.submit.setOnClickListener {
-            val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationProviderClient.removeLocationUpdates(locationCallBack)
-
             val employeeId = sharedPreferences.getString("id",null)?.toInt()!!
             val employeeName = sharedPreferences.getString("name",null)
             val clientName = binding.clientName.text.toString()
             val purpose = binding.clientPurpose.text.toString()
             val amount = binding.amount.text.toString()
             val image = sharedPreferences2.getString("client_image",null)
-            val initialLocation = "start: "
-            val finalLocation = "end: "
+            val initialLocation = intent.getStringExtra("start")
+            val finalLocation = intent.getStringExtra("end")
             val number = binding.phone.text.toString()
 
             putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number)

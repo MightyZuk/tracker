@@ -18,6 +18,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
+import android.util.AttributeSet
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -68,12 +69,13 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private lateinit var dataList: ArrayList<ClientModel>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var locationPoints: MutableList<LatLng>
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: com.google.android.gms.location.LocationRequest
     private lateinit var locationCallback: LocationCallback
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var location: ArrayList<LatLng>
 
-    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.S)
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n", "MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEmployeeBinding.inflate(layoutInflater)
@@ -82,8 +84,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         dataList = ArrayList()
-        location = ArrayList()
-        locationRequest  = com.google.android.gms.location.LocationRequest()
+        locationPoints = ArrayList()
         sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -95,16 +96,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             isSmsPermissionGranted = permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
         }
 
-        locationCallback = object : LocationCallback(){
-            override fun onLocationResult(p0: LocationResult) {
-                super.onLocationResult(p0)
-                p0.locations.let {
-                    for (i in it){
-                        location.add(LatLng(i.latitude,i.longitude))
-                    }
-                }
-            }
-        }
+
         runtimePermission()
         Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
@@ -124,6 +116,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
             .into(binding.employeeImage)
 
+
         binding.clientList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0 && !binding.goForVisit.isShown) binding.goForVisit.show()
@@ -136,14 +129,37 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             }
         })
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+        locationRequest = com.google.android.gms.location.LocationRequest().apply {
+            this.interval = 1000 * 5
+            this.fastestInterval = 1000 * 3
+            this.priority = LocationRequest.QUALITY_HIGH_ACCURACY
+        }
+
+        locationCallback = object : LocationCallback(){
+            override fun onLocationResult(result: LocationResult) {
+                super.onLocationResult(result)
+                result.locations.let {
+                    for (i in it){
+                        locationPoints.add(LatLng(i.latitude,i.longitude))
+                        Toast.makeText(applicationContext,"${i.latitude},${i.longitude}",Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.goForVisit -> {
+                Toast.makeText(this,"started at : ",Toast.LENGTH_SHORT).show()
+                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,Looper.getMainLooper())
                 popUp()
-                startTrackingLocation()
             }
         }
     }
@@ -158,7 +174,11 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         dialog.show()
         dialog.findViewById<MaterialButton>(R.id.submit).setOnClickListener{
             dialog.dismiss()
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+            Toast.makeText(this,"stopped at : ${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}",Toast.LENGTH_SHORT).show()
             Intent(this,Form::class.java).also { intent ->
+                intent.putExtra("start","${locationPoints[0].latitude},${locationPoints[0].longitude}")
+                intent.putExtra("end","${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}")
                 intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
                 intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
                 startActivity(intent)
@@ -275,20 +295,5 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    @SuppressLint("MissingPermission")
-    private fun startTrackingLocation(){
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        locationRequest = locationRequest.apply {
-            this.interval = 1000 * 3
-            this.fastestInterval = 1000 * 1
-            this.priority = LocationRequest.QUALITY_HIGH_ACCURACY
-        }
-
-        fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest,locationCallback,Looper.getMainLooper()
-        )
-    }
 
 }
