@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.location.Location
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,9 +29,9 @@ class Form : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var sharedPreferences2: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
-    private lateinit var list: ArrayList<LatLng>
+    var list: Location? = null
 
-    @SuppressLint("VisibleForTests")
+    @SuppressLint("VisibleForTests", "MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFormBinding.inflate(layoutInflater)
@@ -41,8 +42,11 @@ class Form : AppCompatActivity() {
         sharedPreferences2 = getSharedPreferences("enw", MODE_PRIVATE)
         editor = sharedPreferences2.edit()
 
-
-        list = ArrayList()
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        val task = fusedLocationProviderClient.lastLocation
+        task.addOnCompleteListener {
+            list = it.result
+        }
 
         binding.clientName.setText(intent.getStringExtra("name"))
         binding.clientPurpose.setText(intent.getStringExtra("purpose"))
@@ -56,8 +60,8 @@ class Form : AppCompatActivity() {
             val purpose = binding.clientPurpose.text.toString()
             val amount = binding.amount.text.toString()
             val image = sharedPreferences2.getString("client_image",null)
-            val initialLocation = ""
-            val finalLocation = ""
+            val initialLocation = intent.getStringExtra("start")
+            val finalLocation = "${list?.latitude},${list?.longitude}"
             val number = binding.phone.text.toString()
 
             putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number)

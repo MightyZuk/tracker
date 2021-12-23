@@ -69,10 +69,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private lateinit var dataList: ArrayList<ClientModel>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
-    private lateinit var locationPoints: MutableList<LatLng>
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: com.google.android.gms.location.LocationRequest
-    private lateinit var locationCallback: LocationCallback
+    var location: Location ?= null
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n", "MissingPermission")
@@ -84,7 +81,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         dataList = ArrayList()
-        locationPoints = ArrayList()
         sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -111,11 +107,18 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         }
 
         binding.employeeId.text = "id: ${sharedPreferences.getString("id",null)}"
+        binding.employeePassword.text = "password: ${sharedPreferences.getString("password",null)}"
         binding.employeeName.text = sharedPreferences.getString("name",null)
         Glide.with(this).asBitmap().load(sharedPreferences.getString("employee_image",null))
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
             .into(binding.employeeImage)
 
+
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        val task = fusedLocationProviderClient.lastLocation
+        task.addOnCompleteListener {
+            location = it.result
+        }
 
         binding.clientList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -128,28 +131,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        locationRequest = com.google.android.gms.location.LocationRequest().apply {
-            this.interval = 1000 * 5
-            this.fastestInterval = 1000 * 3
-            this.priority = LocationRequest.QUALITY_HIGH_ACCURACY
-        }
-
-        locationCallback = object : LocationCallback(){
-            override fun onLocationResult(result: LocationResult) {
-                super.onLocationResult(result)
-                result.locations.let {
-                    for (i in it){
-                        locationPoints.add(LatLng(i.latitude,i.longitude))
-                        Toast.makeText(applicationContext,"${i.latitude},${i.longitude}",Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
-
     }
 
     @SuppressLint("MissingPermission")
@@ -157,9 +138,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.goForVisit -> {
+                Toast.makeText(this,"started at: ${location?.latitude}",Toast.LENGTH_SHORT).show()
                 LocationStatus(this).startLocationService()
-//                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,Looper.getMainLooper())
-                Toast.makeText(this,"started at : $locationPoints",Toast.LENGTH_SHORT).show()
                 popUp()
             }
         }
@@ -175,11 +155,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         dialog.show()
         dialog.findViewById<MaterialButton>(R.id.submit).setOnClickListener{
             dialog.dismiss()
-//            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-//            Toast.makeText(this,"stopped at : ${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}",Toast.LENGTH_SHORT).show()
             Intent(this,Form::class.java).also { intent ->
-//                intent.putExtra("start","${locationPoints[0].latitude},${locationPoints[0].longitude}")
-//                intent.putExtra("end","${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}")
+                intent.putExtra("start","${location?.latitude},${location?.longitude}")
                 intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
                 intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
                 startActivity(intent)

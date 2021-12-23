@@ -49,6 +49,7 @@ class EmployeeListAdapter(private val context: Context,private val oldList: Arra
             intent.putExtra("name",current.name)
             intent.putExtra("id",current.id)
             intent.putExtra("image",current.image)
+            intent.putExtra("password",current.password)
             it.context.startActivity(intent)
         }
 

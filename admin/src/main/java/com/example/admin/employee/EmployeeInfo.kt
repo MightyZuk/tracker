@@ -43,6 +43,7 @@ class EmployeeInfo : AppCompatActivity() {
 
         binding.employeeId.text = "id: ${intent.getIntExtra("id",0)}"
         binding.employeeName.text = "${intent.getStringExtra("name")}"
+        binding.employeePassword.text = "password: ${intent.getIntExtra("password",0)}"
         Glide.with(this).asBitmap().load(intent.getStringExtra("image"))
             .fitCenter()
             .centerInside()

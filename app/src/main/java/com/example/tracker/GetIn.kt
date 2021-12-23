@@ -83,6 +83,7 @@ class GetIn : AppCompatActivity() {
                     editor.putString("id",identity)
                     editor.putString("employee_image",image)
                     editor.putString("name",name)
+                    editor.putString("password",password)
                     editor.apply()
                     Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this,Employee::class.java))

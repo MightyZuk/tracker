@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
@@ -24,8 +25,11 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import org.w3c.dom.ls.LSException
 
 class LocationService: Service() {
+
 
     private val locationCallback = object : LocationCallback(){
         override fun onLocationResult(p0: LocationResult) {
@@ -34,7 +38,7 @@ class LocationService: Service() {
                 for(i in it){
                     val latitude = i.latitude
                     val longitude = i.longitude
-                    Log.d("location","$latitude , $longitude")
+                    Log.d("service: ","$latitude , $longitude")
                     Toast.makeText(this@LocationService,"$latitude,$longitude",Toast.LENGTH_SHORT).show()
                 }
             }
@@ -45,6 +49,7 @@ class LocationService: Service() {
         TODO("Not yet implemented")
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startLocationService(){
         val channelId = "location_notification_channel"
@@ -76,28 +81,12 @@ class LocationService: Service() {
             this.interval = 1000 * 3
         }
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
         LocationServices.getFusedLocationProviderClient(this)
             .requestLocationUpdates(locationRequest,locationCallback,Looper.getMainLooper())
         startForeground(175,builder.build())
     }
 
+    @SuppressLint("MissingPermission")
     private fun stopLocationService(){
         LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback)
         stopForeground(true)

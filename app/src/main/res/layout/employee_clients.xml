@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="10dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
@@ -26,11 +28,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="15dp"
             android:text="Clint Barton"
+            android:fontFamily="@font/secular_one"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
@@ -39,8 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="15dp"
             android:text="Purpose: Website"
+            android:fontFamily="@font/secular_one"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -52,7 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
-            android:layout_marginStart="10dp"
+            android:fontFamily="@font/secular_one"
+            android:layout_marginStart="15dp"
             android:text="Destination: jhskjkj9"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -65,9 +70,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="105dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="15dp"
             android:text="Distance travelled: 4km"
             android:textAlignment="center"
+            android:fontFamily="@font/secular_one"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -75,10 +81,10 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/clientImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@color/black"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="240dp" />
 
     </androidx.cardview.widget.CardView>

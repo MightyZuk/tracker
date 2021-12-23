@@ -15,6 +15,8 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.telephony.SmsManager
 import android.text.Html
+import android.util.Base64
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -27,6 +29,7 @@ import com.example.admin.R
 import com.example.admin.Url
 import com.example.admin.databinding.ActivityAddEmployeeBinding
 import com.google.android.material.button.MaterialButton
+import java.io.ByteArrayOutputStream
 import kotlin.random.Random
 
 class AddEmployee : AppCompatActivity() {
@@ -34,7 +37,6 @@ class AddEmployee : AppCompatActivity() {
     private lateinit var binding: ActivityAddEmployeeBinding
     private val imageId : Int = 12
     private lateinit var image : Bitmap
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SetTextI18n")
@@ -87,7 +89,6 @@ class AddEmployee : AppCompatActivity() {
                     binding.number.error = "Please enter a valid number"
                 }
                 else -> {
-                    sendOtp(binding.number.text.toString())
                     checkDataFromServer(binding.number.text.toString(),binding.name.text.toString())
                 }
 
@@ -105,13 +106,18 @@ class AddEmployee : AppCompatActivity() {
         val request = object: StringRequest(Method.POST,Url.checkNumber,
             {
                 if (!it.equals("user already exists",true)){
-                    Intent(this, OtpVerification::class.java).also { intent ->
+                    val id = Random.nextInt(100000,999999)
+                    val password = Random.nextInt(100000,999999)
+                    val img = bitmapToString(image)
+                    Intent(this, EmployeeGeneratedDetails::class.java).also { intent ->
                         intent.putExtra("name",name)
                         intent.putExtra("number",number)
                         intent.putExtra("image",image)
+                        intent.putExtra("id",id)
+                        intent.putExtra("password",password)
                         startActivity(intent)
                     }
-                    Toast.makeText(this,"Otp has been sent to your registered number",Toast.LENGTH_SHORT).show()
+                    setDataToServer(id,password,name,number,img)
                 }else{
                     Toast.makeText(this,"User already exists",Toast.LENGTH_SHORT).show()
                 }
@@ -140,10 +146,41 @@ class AddEmployee : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun sendOtp(number: String){
-        val otp = Random.nextInt(100000,999999)
-        val intent = PendingIntent.getBroadcast(this,0,Intent("SMS_SENT"),0)
-        SmsManager.getDefault().sendTextMessage(number,null,"Otp is $otp",intent,null)
+    private fun bitmapToString(image: Bitmap): String{
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream)
+        val bytesOfImage = byteArrayOutputStream.toByteArray()
+        val encodedImageString: String = Base64.encodeToString(bytesOfImage, Base64.DEFAULT)
+        return encodedImageString
     }
+
+
+    private fun setDataToServer(id: Int,password: Int,name: String?,number: String?,image: String) {
+        val request = object: StringRequest(Method.POST,Url.putData,
+            {
+                if (it.equals("Data Inserted Successfully",true)){
+                    Toast.makeText(this,"Data Inserted",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"User already exists",Toast.LENGTH_SHORT).show()
+                    Log.d("res: ",it.toString())
+                }
+            },
+            {
+                Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+            })
+        {
+            override fun getParams(): MutableMap<String, String> {
+                val map = HashMap<String,String>()
+                map["id"] = id.toString()
+                map["password"] = password.toString()
+                map["name"] = name!!
+                map["number"] = number!!
+                map["image"] = image
+                return map
+            }
+        }
+        Volley.newRequestQueue(this).add(request)
+    }
+
 
 }

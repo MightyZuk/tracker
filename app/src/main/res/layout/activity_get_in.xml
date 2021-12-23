@@ -25,7 +25,6 @@
 
     <EditText
         android:id="@+id/uniqueId"
-        android:maxLength="6"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:background="@drawable/get_in_back"
@@ -33,6 +32,7 @@
         android:foregroundGravity="center_vertical"
         android:hint="Unique id"
         android:inputType="number"
+        android:maxLength="6"
         android:paddingVertical="17dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
@@ -41,10 +41,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.21"
+        app:layout_constraintVertical_bias="0.151"
         tools:ignore="HardcodedText,UnusedAttribute" />
 
     <EditText

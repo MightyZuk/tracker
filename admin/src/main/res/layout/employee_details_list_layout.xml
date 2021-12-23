@@ -37,21 +37,23 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-       <TextView
-           android:id="@+id/employeeId"
-           android:textColor="@color/black"
-           android:textSize="15sp"
-           android:text="id:4778475"
-           android:layout_marginTop="40dp"
-           android:layout_marginStart="20dp"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/employeeId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/secular_one"
+            android:text="id:4778475"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/employeePassword"
             android:textColor="@color/black"
             android:textSize="15sp"
+            android:fontFamily="@font/secular_one"
             android:text="password:4778475"
             android:layout_marginTop="60dp"
             android:layout_marginStart="20dp"
@@ -64,6 +66,7 @@
             android:textColor="@color/black"
             android:textSize="15sp"
             android:text="number:4778475"
+            android:fontFamily="@font/secular_one"
             android:layout_marginTop="80dp"
             android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
@@ -73,10 +76,10 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:src="@color/black"
             android:id="@+id/employeeImage"
-            android:layout_marginStart="245dp"
+            android:layout_marginStart="230dp"
             android:layout_gravity="center_vertical"
-            android:layout_width="60dp"
-            android:layout_height="60dp"/>
+            android:layout_width="100dp"
+            android:layout_height="70dp"/>
 
     </androidx.cardview.widget.CardView>
 

@@ -24,12 +24,12 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/clientImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:src="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.886"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.018" />
@@ -38,6 +38,7 @@
         android:id="@+id/clientName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/secular_one"
         android:layout_marginTop="5dp"
         android:text="Client Name"
         android:textColor="@color/black"
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Website"
+        android:fontFamily="@font/secular_one"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
