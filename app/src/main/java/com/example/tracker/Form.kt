@@ -30,6 +30,7 @@ class Form : AppCompatActivity() {
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var list: ArrayList<LatLng>
 
+    @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFormBinding.inflate(layoutInflater)
@@ -47,14 +48,16 @@ class Form : AppCompatActivity() {
         binding.clientPurpose.setText(intent.getStringExtra("purpose"))
 
         binding.submit.setOnClickListener {
+            LocationStatus(this).stopLocationService()
+            Toast.makeText(this,"stopped at: $list",Toast.LENGTH_SHORT).show()
             val employeeId = sharedPreferences.getString("id",null)?.toInt()!!
             val employeeName = sharedPreferences.getString("name",null)
             val clientName = binding.clientName.text.toString()
             val purpose = binding.clientPurpose.text.toString()
             val amount = binding.amount.text.toString()
             val image = sharedPreferences2.getString("client_image",null)
-            val initialLocation = intent.getStringExtra("start")
-            val finalLocation = intent.getStringExtra("end")
+            val initialLocation = ""
+            val finalLocation = ""
             val number = binding.phone.text.toString()
 
             putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number)

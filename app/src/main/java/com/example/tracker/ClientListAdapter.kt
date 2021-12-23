@@ -32,20 +32,20 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = dataList[position]
-
-        val start = current.initial_location
-        val sla = start.substring(0,start.indexOf(",")).toDouble()
-        val slo = start.substring(start.indexOf(",").plus(1),start.length).toDouble()
-        val end = current.final_location
-        val ela = end.substring(0,end.indexOf(",")).toDouble()
-        val elo = end.substring(end.indexOf(",").plus(1),end.length).toDouble()
-
-        val dis = calculateDistance(sla,slo,ela,elo)
-        val d = String.format("%.0f",dis).toFloat()
+//
+//        val start = current.initial_location
+//        val sla = start.substring(0,start.indexOf(",")).toDouble()
+//        val slo = start.substring(start.indexOf(",").plus(1),start.length).toDouble()
+//        val end = current.final_location
+//        val ela = end.substring(0,end.indexOf(",")).toDouble()
+//        val elo = end.substring(end.indexOf(",").plus(1),end.length).toDouble()
+//
+//        val dis = calculateDistance(sla,slo,ela,elo)
+//        val d = String.format("%.0f",dis).toFloat()
 
         binding.clientName.text = current.client_name
         binding.purpose.text = "purpose: ${current.purpose}"
-        binding.distanceTravelled.text = "Travelled distance : ${d}km"
+//        binding.distanceTravelled.text = "Travelled distance : ${d}km"
         binding.destinationLocation.text = "destination: ${current.final_location}"
         Glide.with(context).asBitmap()
             .load(current.image)

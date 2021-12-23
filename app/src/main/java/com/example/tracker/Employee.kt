@@ -157,8 +157,9 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.goForVisit -> {
-                Toast.makeText(this,"started at : ",Toast.LENGTH_SHORT).show()
-                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,Looper.getMainLooper())
+                LocationStatus(this).startLocationService()
+//                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,Looper.getMainLooper())
+                Toast.makeText(this,"started at : $locationPoints",Toast.LENGTH_SHORT).show()
                 popUp()
             }
         }
@@ -174,11 +175,11 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         dialog.show()
         dialog.findViewById<MaterialButton>(R.id.submit).setOnClickListener{
             dialog.dismiss()
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-            Toast.makeText(this,"stopped at : ${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}",Toast.LENGTH_SHORT).show()
+//            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+//            Toast.makeText(this,"stopped at : ${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}",Toast.LENGTH_SHORT).show()
             Intent(this,Form::class.java).also { intent ->
-                intent.putExtra("start","${locationPoints[0].latitude},${locationPoints[0].longitude}")
-                intent.putExtra("end","${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}")
+//                intent.putExtra("start","${locationPoints[0].latitude},${locationPoints[0].longitude}")
+//                intent.putExtra("end","${locationPoints[locationPoints.size-1].latitude},${locationPoints[locationPoints.size-1].longitude}")
                 intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
                 intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
                 startActivity(intent)
