@@ -7,7 +7,7 @@ import android.widget.Toast
 
 class LocationStatus(val context: Context) {
 
-    private fun isLocationRunning(): Boolean{
+    fun isLocationRunning(): Boolean{
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
             if (LocationService::class.java.name.equals(service.service.className)) {

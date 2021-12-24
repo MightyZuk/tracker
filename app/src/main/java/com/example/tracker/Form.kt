@@ -52,15 +52,16 @@ class Form : AppCompatActivity() {
         binding.clientPurpose.setText(intent.getStringExtra("purpose"))
 
         binding.submit.setOnClickListener {
+            Toast.makeText(this,"${sharedPreferences2.getString("start",null)}",Toast.LENGTH_SHORT).show()
             LocationStatus(this).stopLocationService()
-            Toast.makeText(this,"stopped at: $list",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"stopped at: ${list?.latitude},${list?.longitude}",Toast.LENGTH_SHORT).show()
             val employeeId = sharedPreferences.getString("id",null)?.toInt()!!
             val employeeName = sharedPreferences.getString("name",null)
             val clientName = binding.clientName.text.toString()
             val purpose = binding.clientPurpose.text.toString()
             val amount = binding.amount.text.toString()
             val image = sharedPreferences2.getString("client_image",null)
-            val initialLocation = intent.getStringExtra("start")
+            val initialLocation = sharedPreferences.getString("start",null)
             val finalLocation = "${list?.latitude},${list?.longitude}"
             val number = binding.phone.text.toString()
 

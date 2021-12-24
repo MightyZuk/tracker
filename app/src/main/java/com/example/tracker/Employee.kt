@@ -120,6 +120,10 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             location = it.result
         }
 
+        if(LocationStatus(this).isLocationRunning()){
+            startActivity(Intent(this,Form::class.java))
+        }
+
         binding.clientList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0 && !binding.goForVisit.isShown) binding.goForVisit.show()
@@ -131,6 +135,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
+
+
     }
 
     @SuppressLint("MissingPermission")
@@ -138,7 +144,9 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.goForVisit -> {
-                Toast.makeText(this,"started at: ${location?.latitude}",Toast.LENGTH_SHORT).show()
+                editor.putString("start","${location?.latitude},${location?.longitude}")
+                editor.apply()
+                Toast.makeText(this,"started at: ${location?.latitude},${location?.longitude}",Toast.LENGTH_SHORT).show()
                 LocationStatus(this).startLocationService()
                 popUp()
             }
@@ -156,7 +164,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         dialog.findViewById<MaterialButton>(R.id.submit).setOnClickListener{
             dialog.dismiss()
             Intent(this,Form::class.java).also { intent ->
-                intent.putExtra("start","${location?.latitude},${location?.longitude}")
                 intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
                 intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
                 startActivity(intent)
