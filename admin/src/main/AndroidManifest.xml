@@ -20,23 +20,38 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:name=".controls.EmployeeGeneratedDetails"
             android:parentActivityName=".controls.AddEmployee"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:name=".employee.EmployeeInfo"
             />
         <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:name=".employee.EmployeeDetails"
             android:parentActivityName=".controls.MainPage"/>
-        <activity android:name=".employee.TravelDetails" />
         <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:name=".employee.TravelDetails" />
+        <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:name=".controls.AddEmployee"
             android:parentActivityName=".controls.MainPage" />
         <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:name=".controls.MainPage"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

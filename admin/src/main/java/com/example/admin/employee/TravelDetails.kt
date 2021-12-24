@@ -146,11 +146,11 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
         val list = geocoder.getFromLocation(sla.toDouble(), slo.toDouble(),10)
         val lists = geocoder.getFromLocation(ela.toDouble(), elo.toDouble(),10)
 
-        map.addMarker(MarkerOptions().title(list[0].getAddressLine(0))
+        map.addMarker(MarkerOptions().title("start at : ${list[0].getAddressLine(0)}")
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             .position(LatLng(sla.toDouble(), slo.toDouble())))
 
-        map.addMarker(MarkerOptions().title(lists[0].getAddressLine(0))
+        map.addMarker(MarkerOptions().title("end at: ${lists[0].getAddressLine(0)}")
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             .position(LatLng(ela.toDouble(), elo.toDouble())))
 
@@ -160,26 +160,34 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
                 LatLng(ela.toDouble(),elo.toDouble())
             ))
 
-//        drawTrack(start,end)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(ela.toDouble(),elo.toDouble()),7F))
+        map.setLatLngBoundsForCameraTarget(
+            LatLngBounds(LatLng(sla.toDouble().minus(0.1), slo.toDouble()), LatLng(ela.toDouble().plus(0.1),elo.toDouble())))
+
+        val center = LatLngBounds.builder()
+            .include(LatLng(sla.toDouble(),slo.toDouble())).include(LatLng(ela.toDouble(),elo.toDouble()))
+            .build().center
+
+        map.moveCamera(CameraUpdateFactory
+            .newLatLngZoom(center,16F))
+
 
     }
 
-    private fun calculateDistance(sla: Double,slo: Double,ela: Double,elo: Double): Double{
-        val loDiff = slo - elo
-        var distance = sin(degreeToRadian(sla)) * sin(degreeToRadian(ela))+ cos(degreeToRadian(sla)) * cos(degreeToRadian(ela))* cos(degreeToRadian(loDiff))
-        distance = acos(distance)
-        distance = radianToDegree(distance)
-        distance *= 60 * 1.1515
-        distance *= 1.609344
-        return distance
-    }
-
-    private fun degreeToRadian(latitude: Double): Double{
-        return (latitude*Math.PI/180.0)
-    }
-
-    private fun radianToDegree(distance: Double): Double{
-        return (distance * 180/Math.PI)
-    }
+//    private fun calculateDistance(sla: Double,slo: Double,ela: Double,elo: Double): Double{
+//        val loDiff = slo - elo
+//        var distance = sin(degreeToRadian(sla)) * sin(degreeToRadian(ela))+ cos(degreeToRadian(sla)) * cos(degreeToRadian(ela))* cos(degreeToRadian(loDiff))
+//        distance = acos(distance)
+//        distance = radianToDegree(distance)
+//        distance *= 60 * 1.1515
+//        distance *= 1.609344
+//        return distance
+//    }
+//
+//    private fun degreeToRadian(latitude: Double): Double{
+//        return (latitude*Math.PI/180.0)
+//    }
+//
+//    private fun radianToDegree(distance: Double): Double{
+//        return (distance * 180/Math.PI)
+//    }
 }
