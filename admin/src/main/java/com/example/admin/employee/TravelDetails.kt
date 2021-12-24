@@ -48,6 +48,7 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.internal.IGoogleMapDelegate
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
+import com.google.maps.android.SphericalUtil
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.acos
@@ -135,8 +136,10 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
         Log.d("start",slo.toString())
         Log.d("end",sla.toString())
 
-        val dis = calculateDistance(sla!!.toDouble(),slo!!.toDouble(),ela!!.toDouble(),elo!!.toDouble())
-        val d = String.format("%.0f",dis).toFloat()
+        val dis = SphericalUtil.computeDistanceBetween(LatLng(sla!!.toDouble(),slo!!.toDouble()),
+            LatLng(ela!!.toDouble(),elo!!.toDouble())
+        )
+        val d = String.format("%.0f",dis/1000).toFloat()
 
         binding.travelledDistance.text = "Travelled distance: ${d}km"
         val geocoder = Geocoder(this,Locale.getDefault())

@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.tracker.databinding.EmployeeClientsBinding
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
@@ -40,8 +42,9 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
         val ela = end.substring(0,end.indexOf(",")).toDouble()
         val elo = end.substring(end.indexOf(",").plus(1),end.length).toDouble()
 
-        val dis = calculateDistance(sla,slo,ela,elo)
-        val d = String.format("%.0f",dis).toFloat()
+//        val dis = calculateDistance(sla,slo,ela,elo)
+        val dis = SphericalUtil.computeDistanceBetween(LatLng(sla,slo),LatLng(ela,elo))
+        val d = String.format("%.0f",dis/1000).toFloat()
 
         binding.clientName.text = current.client_name
         binding.purpose.text = "purpose: ${current.purpose}"
@@ -66,22 +69,22 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
         return position
     }
 
-    private fun calculateDistance(sla: Double,slo: Double,ela: Double,elo: Double): Double{
-        val loDiff = slo - elo
-        var distance = sin(degreeToRadian(sla)) * sin(degreeToRadian(ela)) + cos(degreeToRadian(sla)) * cos(degreeToRadian(ela)) * cos(degreeToRadian(loDiff))
-        distance = acos(distance)
-        distance = radianToDegree(distance)
-        distance *= 60 * 1.1515
-        distance *= 1.609344
-        return distance
-    }
+//    private fun calculateDistance(sla: Double,slo: Double,ela: Double,elo: Double): Double{
+//        val loDiff = slo - elo
+//        var distance = sin(degreeToRadian(sla)) * sin(degreeToRadian(ela)) + cos(degreeToRadian(sla)) * cos(degreeToRadian(ela)) * cos(degreeToRadian(loDiff))
+//        distance = acos(distance)
+//        distance = radianToDegree(distance)
+//        distance *= 60 * 1.1515
+//        distance *= 1.609344
+//        return distance
+//    }
 
-    private fun degreeToRadian(latitude: Double): Double{
-        return (latitude*Math.PI/180.0)
-    }
-
-    private fun radianToDegree(distance: Double): Double{
-        return (distance * 180/Math.PI)
-    }
+//    private fun degreeToRadian(latitude: Double): Double{
+//        return (latitude*Math.PI/180.0)
+//    }
+//
+//    private fun radianToDegree(distance: Double): Double{
+//        return (distance * 180/Math.PI)
+//    }
 
 }
