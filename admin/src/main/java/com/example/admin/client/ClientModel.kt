@@ -9,5 +9,6 @@ class ClientModel(
     val initial_location: String,
     val final_location: String,
     val image: String,
-    val number: Int
+    val number: Int,
+    val dateTime: String
 )

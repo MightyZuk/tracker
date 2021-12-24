@@ -40,42 +40,39 @@
             android:id="@+id/purpose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="45dp"
-            android:fontFamily="@font/secular_one"
             android:text="Purpose: Website"
+            android:fontFamily="@font/secular_one"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/destinationLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="65dp"
             android:fontFamily="@font/secular_one"
+            android:layout_marginStart="15dp"
             android:text="Destination: jhskjkj9"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/distanceTravelled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="105dp"
-            android:fontFamily="@font/secular_one"
             android:text="Distance travelled: 4km"
             android:textAlignment="center"
+            android:fontFamily="@font/secular_one"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -85,6 +82,18 @@
             android:layout_marginStart="240dp"
             android:layout_marginTop="20dp"
             android:src="@color/black" />
+
+        <TextView
+            android:id="@+id/date_picker_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="3 Sept 2021, 12:23 PM"
+            android:fontFamily="@font/secular_one"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText" />
 
     </androidx.cardview.widget.CardView>
 

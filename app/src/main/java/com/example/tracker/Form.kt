@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInput
 import java.net.URL
+import java.text.SimpleDateFormat
 
 class Form : AppCompatActivity() {
 
@@ -31,7 +32,7 @@ class Form : AppCompatActivity() {
     private lateinit var editor: SharedPreferences.Editor
     var list: Location? = null
 
-    @SuppressLint("VisibleForTests", "MissingPermission")
+    @SuppressLint("VisibleForTests", "MissingPermission", "SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFormBinding.inflate(layoutInflater)
@@ -61,6 +62,9 @@ class Form : AppCompatActivity() {
             val initialLocation = sharedPreferences.getString("start",null)
             val finalLocation = "${list?.latitude},${list?.longitude}"
             val number = binding.phone.text.toString()
+            val sysTime = System.currentTimeMillis()
+            val formatter = SimpleDateFormat("dd MMM yyyy, hh:mm a")
+            val dateTime = formatter.format(sysTime)
 
             when{
                 clientName.isEmpty() -> {
@@ -84,11 +88,11 @@ class Form : AppCompatActivity() {
                     binding.phone.error = "Please enter valid number"
                 }
                 else -> {
-                    Toast.makeText(this,"${sharedPreferences2.getString("start",null)}",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this,dateTime,Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this,"${sharedPreferences2.getString("start",null)}",Toast.LENGTH_SHORT).show()
                     LocationStatus(this).stopLocationService()
-                    Toast.makeText(this,"stopped at: ${list?.latitude},${list?.longitude}",Toast.LENGTH_SHORT).show()
-
-                    putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number)
+//                    Toast.makeText(this,"stopped at: ${list?.latitude},${list?.longitude}",Toast.LENGTH_SHORT).show()
+                    putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number,dateTime)
                 }
             }
         }
@@ -118,7 +122,7 @@ class Form : AppCompatActivity() {
 
     private fun putClientDataToServer(employeeId: Int,employeeName: String?,clientName: String?,purpose: String?,
                                       amount: String?,image: String?,initialLocation: String?,finalLocation: String?,
-                                      number: String?){
+                                      number: String?,dateTime: String?){
 
         val request = object: StringRequest(Method.POST,Url.putClientData,
             {
@@ -145,6 +149,7 @@ class Form : AppCompatActivity() {
                     map["initial_location"] = initialLocation!!
                     map["final_location"] = finalLocation!!
                     map["number"] = number!!
+                    map["date_time"] = dateTime!!
                     return map
                 }
             }
@@ -156,10 +161,6 @@ class Form : AppCompatActivity() {
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val bytesOfImage = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(bytesOfImage, Base64.DEFAULT)
-    }
-
-    private fun checkIfEmpty(){
-
     }
 
 }

@@ -49,7 +49,8 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
         binding.clientName.text = current.client_name
         binding.purpose.text = "purpose: ${current.purpose}"
         binding.distanceTravelled.text = "Travelled distance : ${d}km"
-        binding.destinationLocation.text = "destination: ${current.final_location}"
+        binding.destinationLocation.text = current.final_location
+        binding.dateTime.text = current.dateTime
         Glide.with(context).asBitmap()
             .load(current.image)
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))

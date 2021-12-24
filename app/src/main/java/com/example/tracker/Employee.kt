@@ -238,8 +238,9 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                         val final = jsonObject.getString("final_location")
                         val purpose = jsonObject.getString("purpose")
                         val amount = jsonObject.getInt("amount")
+                        val dateTime = jsonObject.getString("date_time")
 
-                        val client = ClientModel(id, employeeName, name, purpose, amount, initial, final, image, number)
+                        val client = ClientModel(id, employeeName, name, purpose, amount, initial, final, image, number, dateTime)
 
                         dataList.add(client)
                     }
