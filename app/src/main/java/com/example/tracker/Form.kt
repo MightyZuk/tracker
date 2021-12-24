@@ -52,9 +52,6 @@ class Form : AppCompatActivity() {
         binding.clientPurpose.setText(intent.getStringExtra("purpose"))
 
         binding.submit.setOnClickListener {
-            Toast.makeText(this,"${sharedPreferences2.getString("start",null)}",Toast.LENGTH_SHORT).show()
-            LocationStatus(this).stopLocationService()
-            Toast.makeText(this,"stopped at: ${list?.latitude},${list?.longitude}",Toast.LENGTH_SHORT).show()
             val employeeId = sharedPreferences.getString("id",null)?.toInt()!!
             val employeeName = sharedPreferences.getString("name",null)
             val clientName = binding.clientName.text.toString()
@@ -65,7 +62,35 @@ class Form : AppCompatActivity() {
             val finalLocation = "${list?.latitude},${list?.longitude}"
             val number = binding.phone.text.toString()
 
-            putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number)
+            when{
+                clientName.isEmpty() -> {
+                    binding.clientName.requestFocus()
+                    binding.clientName.error = "Required"
+                }
+                purpose.isEmpty() -> {
+                    binding.clientPurpose.requestFocus()
+                    binding.clientPurpose.error = "Required"
+                }
+                number.isEmpty() -> {
+                    binding.phone.requestFocus()
+                    binding.phone.error = "Required"
+                }
+                amount.isEmpty() -> {
+                    binding.amount.requestFocus()
+                    binding.amount.error = "Required"
+                }
+                number.length < 10 || number.length > 10 -> {
+                    binding.phone.requestFocus()
+                    binding.phone.error = "Please enter valid number"
+                }
+                else -> {
+                    Toast.makeText(this,"${sharedPreferences2.getString("start",null)}",Toast.LENGTH_SHORT).show()
+                    LocationStatus(this).stopLocationService()
+                    Toast.makeText(this,"stopped at: ${list?.latitude},${list?.longitude}",Toast.LENGTH_SHORT).show()
+
+                    putClientDataToServer(employeeId,employeeName,clientName,purpose,amount,image,initialLocation,finalLocation,number)
+                }
+            }
         }
 
         binding.takePicture.setOnClickListener {
@@ -131,6 +156,10 @@ class Form : AppCompatActivity() {
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val bytesOfImage = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(bytesOfImage, Base64.DEFAULT)
+    }
+
+    private fun checkIfEmpty(){
+
     }
 
 }
