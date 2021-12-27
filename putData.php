@@ -7,7 +7,9 @@
 	  $name = $_POST["name"];
     $image = $_POST["image"];
 		$number = $_POST["number"];
-	  $filename = "http://192.168.1.7/Employee/images/".$name.".jpg";
+		$filename = "http://192.168.1.49/Employee/images/".$name.".jpg";
+		// $filename = "http://192.168.1.7/Employee/images/".$name.".jpg";
+
 	  file_put_contents("images/".$name.".jpg",base64_decode($image));
 
 		$sql1 = "select * from employee_data where id='$id' ";
@@ -19,7 +21,7 @@
 			}
 	  }
 	  else{
-		$sql = "INSERT INTO employee_data(id,password,name,number,image)
+		$sql = "insert into employee_data(id,password,name,number,image)
 		         VALUES('$id','$password','$name','$number','$filename') ";
 	  	$res = mysqli_query($conn,$sql);
 
