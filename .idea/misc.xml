@@ -13,8 +13,21 @@
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/drawable/get_in_back.xml" value="0.3117948717948718" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/drawable/ic_admin.xml" value="0.3117948717948718" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3117948717948718" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-large/activity_add_employee.xml" value="0.360625" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-large/activity_employee_info.xml" value="0.360625" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-large/activity_travel_details.xml" value="0.360625" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-large/employee_details_list_layout.xml" value="0.360625" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-normal/activity_add_employee.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-normal/activity_employee_info.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-normal/activity_travel_details.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-normal/employee_details_list_layout.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-small/activity_add_employee.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-small/activity_employee_info.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-small/activity_travel_details.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-small/employee_details_list_layout.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout-sw600dp/activity_employee_details.xml" value="0.225390625" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout/activity_add_employee.xml" value="0.22" />
-        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout/activity_employee_details.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout/activity_employee_details.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout/activity_employee_generated_details.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout/activity_employee_info.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/admin/src/main/res/layout/activity_main.xml" value="0.2864583333333333" />
@@ -31,12 +44,19 @@
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/drawable/ic_person.xml" value="0.3117948717948718" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/drawable/phone.xml" value="0.3117948717948718" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/font/secular_one.xml" value="0.32564102564102565" />
-        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/activity_employee.xml" value="0.22" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-hdpi/employee_clients.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-large/activity_employee.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-large/employee_clients.xml" value="0.360625" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-normal/activity_employee.xml" value="0.275" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-normal/employee_clients.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-w720dp/employee_clients.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout-xhdpi/employee_clients.xml" value="0.30052083333333335" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/activity_employee.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/activity_form.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/activity_get_in.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/activity_main.xml" value="0.2864583333333333" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/dialog.xml" value="0.30052083333333335" />
-        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/employee_clients.xml" value="0.22" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/employee_clients.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/layout/pop_up.xml" value="0.30052083333333335" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/menu/menu.xml" value="0.19493243243243244" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/tracker/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3117948717948718" />
