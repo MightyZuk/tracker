@@ -11,11 +11,13 @@
 				$data[] = $row;
 			}
 			print(json_encode($data));
-		}else{
-			echo "ok, failed to fetch data";
 		}
-
-	}else{
+		if(mysqli_num_rows($res)==0){
+				echo json_encode(array("success"));
+		}
+		else{ echo json_encode(array("failed to connect"));	}
+	}
+	else{
 		echo json_encode("failed to connect");
 	}
 
