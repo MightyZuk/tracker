@@ -38,7 +38,7 @@ class LocationService: Service() {
                 for(i in it){
                     val latitude = i.latitude
                     val longitude = i.longitude
-                    Log.d("service: ","$latitude , $longitude")
+                    Url.list.add("${i.latitude},${i.longitude}")
                     Toast.makeText(this@LocationService,"$latitude,$longitude",Toast.LENGTH_SHORT).show()
                 }
             }
@@ -54,7 +54,7 @@ class LocationService: Service() {
     private fun startLocationService(){
         val channelId = "location_notification_channel"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val resultIntent = Intent()
+        val resultIntent = Intent(this,Form::class.java)
         val pendingIntent = PendingIntent
             .getActivities(applicationContext,0, arrayOf(resultIntent),PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -77,8 +77,8 @@ class LocationService: Service() {
 
         val locationRequest = LocationRequest().apply {
             this.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            this.interval = 1000 * 4
-            this.interval = 1000 * 3
+            this.interval = 1000 * 7
+            this.fastestInterval = 1000 * 5
         }
 
         LocationServices.getFusedLocationProviderClient(this)

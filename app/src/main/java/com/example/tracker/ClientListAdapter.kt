@@ -42,9 +42,12 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
         val ela = end.substring(0,end.indexOf(",")).toDouble()
         val elo = end.substring(end.indexOf(",").plus(1),end.length).toDouble()
 
-//        val dis = calculateDistance(sla,slo,ela,elo)
+//        val d = calculateDistance(sla,slo,ela,elo)
         val dis = SphericalUtil.computeDistanceBetween(LatLng(sla,slo),LatLng(ela,elo))
-        val d = String.format("%.0f",dis/1000).toFloat()
+//        val dis = SphericalUtil.computeDistanceBetween(LatLng(21.126145760750227, 79.13538794220689)
+//            ,LatLng(21.129994180224855, 79.13740299635742))
+        val d = String.format("%.3f",dis/1000).toFloat()
+
 
         binding.clientName.text = current.client_name
         binding.purpose.text = "purpose: ${current.purpose}"
@@ -79,7 +82,7 @@ class ClientListAdapter(private val context: Context,private val dataList: Array
 //        distance *= 1.609344
 //        return distance
 //    }
-
+//
 //    private fun degreeToRadian(latitude: Double): Double{
 //        return (latitude*Math.PI/180.0)
 //    }

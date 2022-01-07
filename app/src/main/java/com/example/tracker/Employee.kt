@@ -48,6 +48,7 @@ import com.android.volley.DefaultRetryPolicy
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.tracker.Url.Companion.list
 import com.google.android.gms.common.api.Api
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -85,15 +86,15 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         editor = sharedPreferences.edit()
 
         fetchClientDataFromServer()
+
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permission ->
             isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: isLocationPermissionGranted
             isCameraPermissionGranted = permission[Manifest.permission.CAMERA] ?: isCameraPermissionGranted
             isSmsPermissionGranted = permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
         }
-
-
         runtimePermission()
+
         Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
         val employeeAdapter = ClientListAdapter(this,dataList)
@@ -116,6 +117,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         val task = fusedLocationProviderClient.lastLocation
+
         task.addOnCompleteListener {
             location = it.result
         }
@@ -135,7 +137,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
-
 
     }
 
@@ -167,6 +168,9 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
                 intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
                 startActivity(intent)
+            }
+            for (i in Url.list){
+                Log.d("initial: ",i)
             }
         }
     }
@@ -280,6 +284,5 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 }

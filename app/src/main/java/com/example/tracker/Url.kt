@@ -2,6 +2,8 @@ package com.example.tracker
 
 class Url {
     companion object{
+            val list : MutableList<String> = mutableListOf()
+
 //            const val getClientData = "http://192.168.1.7/Employee/getClientData.php"//home
         const val getClientData = "http://192.168.1.49/Employee/getClientData.php" //intern
 
@@ -19,5 +21,7 @@ class Url {
 
 //            const val checkNumber = "http://192.168.1.7/Employee/checkNumberExists.php" //home
         const val checkNumber = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
+
+        const val putLocation = "http://192.168.1.49/Employee/putLocation.php"
         }
 }

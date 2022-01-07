@@ -19,6 +19,8 @@ class Url {
 
 //        const val checkNumber = "http://192.168.1.7/Employee/checkNumberExists.php" //home
         const val checkNumber = "http://192.168.1.49/Employee/checkNumberExists.php" //intern
+
+        const val putLocation = "http://192.168.1.49/Employee/putLocation.php"
     }
 
 }

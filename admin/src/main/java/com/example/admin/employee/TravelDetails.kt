@@ -139,7 +139,7 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
         val dis = SphericalUtil.computeDistanceBetween(LatLng(sla!!.toDouble(),slo!!.toDouble()),
             LatLng(ela!!.toDouble(),elo!!.toDouble())
         )
-        val d = String.format("%.0f",dis/1000).toFloat()
+        val d = String.format("%.3f",dis/1000).toFloat()
 
         binding.travelledDistance.text = "Travelled distance: ${d}km"
         val geocoder = Geocoder(this,Locale.getDefault())
@@ -154,11 +154,26 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             .position(LatLng(ela.toDouble(), elo.toDouble())))
 
+//        map.addMarker(MarkerOptions().title("end at: ${lists[0].getAddressLine(0)}")
+//            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+//            .position(LatLng(21.13433207331876, 79.14032948830815)))
+
         map.addPolyline(PolylineOptions().color(R.color.purple_200)
             .add(
                 LatLng(sla.toDouble(),slo.toDouble()),
                 LatLng(ela.toDouble(),elo.toDouble())
             ))
+
+//        map.addPolyline(PolylineOptions().color(R.color.purple_200)
+//            .add(
+//                LatLng(21.12619146601591, 79.13538756023924),
+//                LatLng(21.12741240511093, 79.13663210516822),
+//                LatLng(21.128463205298672, 79.13735093715307),
+//                LatLng(21.1280829165668, 79.1389280759855),
+//                LatLng(21.129901078540822, 79.13942511295593),
+//                LatLng(21.132496656422767, 79.1397133204843),
+//                LatLng(21.13433207331876, 79.14032948830815),
+//            ))
 
         map.setLatLngBoundsForCameraTarget(
             LatLngBounds(LatLng(sla.toDouble().minus(0.1), slo.toDouble()), LatLng(ela.toDouble().plus(0.1),elo.toDouble())))
