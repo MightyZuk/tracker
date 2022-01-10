@@ -62,8 +62,6 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
     private lateinit var locationRequest: com.google.android.gms.location.LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationPoints: ArrayList<LatLng>
-    private var polyline : Polyline? = null
-
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("SetTextI18n", "MissingPermission")
@@ -111,10 +109,8 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
         binding.purpose.text = intent.getStringExtra("purpose")
         binding.initialLocation.text = "start: ${intent.getStringExtra("initial")}"
         binding.destinationLocation.text = "end: ${intent.getStringExtra("final")}"
+        binding.travelledDistance.text = "Travelled distance: ${intent.getFloatExtra("distance",0f)}km"
 
-//        val distanceInMeters = start.distanceTo(end)
-//        val float = String.format("%.0f",distanceInMeters).toFloat()
-//        val km = float/1000
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -133,47 +129,35 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
         val ela = end?.substring(0,end.indexOf(","))
         val elo = end?.substring(end.indexOf(",").plus(1),end.length)
 
-        Log.d("start",slo.toString())
-        Log.d("end",sla.toString())
+        val re = intent.getStringExtra("locations")!!.removeRange(0,1)
+        val e = re.removeRange(re.length-2,re.length)
+        val de = e.split(", ")
+        Log.d("de",de.toString())
 
-        val dis = SphericalUtil.computeDistanceBetween(LatLng(sla!!.toDouble(),slo!!.toDouble()),
-            LatLng(ela!!.toDouble(),elo!!.toDouble())
-        )
-        val d = String.format("%.3f",dis/1000).toFloat()
+        val polylineOptions = PolylineOptions().color(R.color.purple_200)
+        for (l in de){
+            val slat = l.substring(0,l.indexOf(","))
+            val slon = l.substring(l.indexOf(",").plus(1),l.length)
 
-        binding.travelledDistance.text = "Travelled distance: ${d}km"
+            val point = LatLng(slat.toDouble(),slon.toDouble())
+            polylineOptions.add(point)
+            Log.d("points ",point.toString())
+        }
+        map.addPolyline(polylineOptions)
+
+
         val geocoder = Geocoder(this,Locale.getDefault())
-        val list = geocoder.getFromLocation(sla.toDouble(), slo.toDouble(),10)
-        val lists = geocoder.getFromLocation(ela.toDouble(), elo.toDouble(),10)
+        val startGeo = geocoder.getFromLocation(sla!!.toDouble(), slo!!.toDouble(),10)
+        val endGeo = geocoder.getFromLocation(ela!!.toDouble(), elo!!.toDouble(),10)
 
-        map.addMarker(MarkerOptions().title("start at : ${list[0].getAddressLine(0)}")
+        map.addMarker(MarkerOptions().title("start at : ${startGeo[0].getAddressLine(0)}")
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             .position(LatLng(sla.toDouble(), slo.toDouble())))
 
-        map.addMarker(MarkerOptions().title("end at: ${lists[0].getAddressLine(0)}")
+        map.addMarker(MarkerOptions().title("end at: ${endGeo[0].getAddressLine(0)}")
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             .position(LatLng(ela.toDouble(), elo.toDouble())))
 
-//        map.addMarker(MarkerOptions().title("end at: ${lists[0].getAddressLine(0)}")
-//            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-//            .position(LatLng(21.13433207331876, 79.14032948830815)))
-
-        map.addPolyline(PolylineOptions().color(R.color.purple_200)
-            .add(
-                LatLng(sla.toDouble(),slo.toDouble()),
-                LatLng(ela.toDouble(),elo.toDouble())
-            ))
-
-//        map.addPolyline(PolylineOptions().color(R.color.purple_200)
-//            .add(
-//                LatLng(21.12619146601591, 79.13538756023924),
-//                LatLng(21.12741240511093, 79.13663210516822),
-//                LatLng(21.128463205298672, 79.13735093715307),
-//                LatLng(21.1280829165668, 79.1389280759855),
-//                LatLng(21.129901078540822, 79.13942511295593),
-//                LatLng(21.132496656422767, 79.1397133204843),
-//                LatLng(21.13433207331876, 79.14032948830815),
-//            ))
 
         map.setLatLngBoundsForCameraTarget(
             LatLngBounds(LatLng(sla.toDouble().minus(0.1), slo.toDouble()), LatLng(ela.toDouble().plus(0.1),elo.toDouble())))
@@ -187,22 +171,4 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
 
 
     }
-
-//    private fun calculateDistance(sla: Double,slo: Double,ela: Double,elo: Double): Double{
-//        val loDiff = slo - elo
-//        var distance = sin(degreeToRadian(sla)) * sin(degreeToRadian(ela))+ cos(degreeToRadian(sla)) * cos(degreeToRadian(ela))* cos(degreeToRadian(loDiff))
-//        distance = acos(distance)
-//        distance = radianToDegree(distance)
-//        distance *= 60 * 1.1515
-//        distance *= 1.609344
-//        return distance
-//    }
-//
-//    private fun degreeToRadian(latitude: Double): Double{
-//        return (latitude*Math.PI/180.0)
-//    }
-//
-//    private fun radianToDegree(distance: Double): Double{
-//        return (distance * 180/Math.PI)
-//    }
 }

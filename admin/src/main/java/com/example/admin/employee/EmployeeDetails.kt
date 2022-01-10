@@ -1,5 +1,6 @@
 package com.example.admin.employee
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -19,6 +20,7 @@ class EmployeeDetails : AppCompatActivity() {
     private lateinit var binding: ActivityEmployeeDetailsBinding
     private lateinit var dataList: ArrayList<EmployeeModel>
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Employee's</font>")
@@ -36,6 +38,7 @@ class EmployeeDetails : AppCompatActivity() {
         binding.refreshEmployees.setOnRefreshListener {
             dataList.clear()
             getDataFromServer()
+            listAdapter.notifyDataSetChanged()
             binding.refreshEmployees.isRefreshing = false
         }
 
@@ -58,12 +61,10 @@ class EmployeeDetails : AppCompatActivity() {
                         val id = jsonObject.getInt("id")
                         val password = jsonObject.getInt("password")
                         val name = jsonObject.getString("name")
+                        val number = jsonObject.getString("number")
                         val image = jsonObject.getString("image")
-                        val number = jsonObject.getInt("number")
 
                         val employeeData = EmployeeModel(id, password, name, image, number)
-                        Log.d("request: ", employeeData.toString())
-
 
                         dataList.add(employeeData)
                     }

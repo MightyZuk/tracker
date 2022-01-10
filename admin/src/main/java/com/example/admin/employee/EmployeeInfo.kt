@@ -18,12 +18,18 @@ import com.example.admin.client.ClientModel
 import com.example.admin.R
 import com.example.admin.Url
 import com.example.admin.databinding.ActivityEmployeeInfoBinding
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import org.json.JSONArray
 
 class EmployeeInfo : AppCompatActivity() {
 
     private lateinit var binding: ActivityEmployeeInfoBinding
     private lateinit var list: ArrayList<ClientModel>
+    companion object{
+        var sum = 0F
+        var locations = ""
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,13 +84,16 @@ class EmployeeInfo : AppCompatActivity() {
                         val name = jsonObject.getString("client_name")
                         val number = jsonObject.getInt("number")
                         val image = jsonObject.getString("image")
-                        val initial = jsonObject.getString("initial_location")
-                        val final = jsonObject.getString("final_location")
+                        val location = jsonObject.getString("location")
                         val purpose = jsonObject.getString("purpose")
                         val amount = jsonObject.getInt("amount")
                         val dateTime = jsonObject.getString("date_time")
 
-                        val client = ClientModel(id, employeeName, name, purpose, amount, initial, final, image, number,dateTime)
+                        val end = destination(location)
+                        val start = initial(location)
+                        val distance = calculateDistance(location)
+
+                        val client = ClientModel(id, employeeName, name, purpose, amount, start, end, location, distance, image, number,dateTime)
 
                         list.add(client)
                     }
@@ -108,6 +117,49 @@ class EmployeeInfo : AppCompatActivity() {
         }
 
         Volley.newRequestQueue(this).add(request)
+    }
+
+    private fun destination(loc: String): String{
+        val re = loc.removeRange(0,1)
+        val e = re.removeRange(re.length-2,re.length)
+        val de = e.split(", ")
+        val el = de[de.size-1].substring(0,de[de.size-1].indexOf(",")).toDouble()
+        val eo = de[de.size-1].substring(de[de.size-1].indexOf(",").plus(1),de[de.size-1].length).toDouble()
+        locations = "${el},${eo}"
+        return locations
+    }
+
+    private fun initial(loc: String): String{
+        val re = loc.removeRange(0,1)
+        val e = re.removeRange(re.length-2,re.length)
+        val de = e.split(", ")
+        val el = de[0].substring(0,de[0].indexOf(",")).toDouble()
+        val eo = de[0].substring(de[0].indexOf(",").plus(1),de[0].length).toDouble()
+        locations = "${el},${eo}"
+        return locations
+    }
+
+    private fun calculateDistance(loc: String): Float {
+        val re = loc.removeRange(0, 1)
+        val e = re.removeRange(re.length - 2, re.length)
+        val de = e.split(", ")
+
+        var sla = de[0].substring(0, de[0].indexOf(",")).toDouble()
+        var slo = de[0].substring(de[0].indexOf(",").plus(1), de[0].length).toDouble()
+
+        for (i in 1 until de.size){
+            val ela = de[i].substring(0, de[i].indexOf(",")).toDouble()
+            val elo = de[i].substring(de[i].indexOf(",").plus(1), de[i].length).toDouble()
+
+            val d = SphericalUtil.computeDistanceBetween(LatLng(sla,slo), LatLng(ela,elo))
+            val distance = String.format("%.2f",d/1000).toFloat()
+
+            sum += distance
+
+            sla = ela
+            slo = elo
+        }
+        return sum
     }
 
 }

@@ -1,16 +1,13 @@
-package com.example.tracker
+package com.example.tracker.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.location.LocationRequest
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,7 +15,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
-import android.util.AttributeSet
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -27,35 +23,26 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import com.android.volley.toolbox.*
 import com.example.tracker.databinding.ActivityEmployeeBinding
 import com.google.android.material.button.MaterialButton
 import org.json.JSONArray
-import java.io.StringReader
-import java.lang.reflect.Method
-import com.android.volley.DefaultRetryPolicy
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.tracker.Url.Companion.list
-import com.google.android.gms.common.api.Api
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
+import com.example.tracker.R
+import com.example.tracker.adapter.ClientListAdapter
+import com.example.tracker.model.ClientModel
+import com.example.tracker.service.LocationStatus
+import com.example.tracker.usable.Url
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import org.json.JSONObject
+import com.google.maps.android.SphericalUtil
+import java.util.stream.IntStream.range
 
 
 class Employee : AppCompatActivity(), View.OnClickListener {
@@ -72,6 +59,11 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private lateinit var editor: SharedPreferences.Editor
     var location: Location ?= null
 
+    companion object{
+        var sum = 0F
+        var locations = ""
+    }
+
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n", "MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,13 +71,13 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         binding = ActivityEmployeeBinding.inflate(layoutInflater)
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Employee</font>")
         setContentView(binding.root)
+
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         dataList = ArrayList()
+
         sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
-
-        fetchClientDataFromServer()
 
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permission ->
@@ -97,12 +89,16 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
         Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
 
+        fetchClientDataFromServer()
+
         val employeeAdapter = ClientListAdapter(this,dataList)
         binding.clientList.adapter = employeeAdapter
 
         binding.goForVisit.setOnClickListener(this)
+
         binding.refreshClient.setOnRefreshListener {
             dataList.clear()
+            employeeAdapter.notifyDataSetChanged()
             fetchClientDataFromServer()
             binding.refreshClient.isRefreshing = false
         }
@@ -148,6 +144,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 editor.putString("start","${location?.latitude},${location?.longitude}")
                 editor.apply()
                 Toast.makeText(this,"started at: ${location?.latitude},${location?.longitude}",Toast.LENGTH_SHORT).show()
+                Url.list.clear()
                 LocationStatus(this).startLocationService()
                 popUp()
             }
@@ -168,9 +165,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 intent.putExtra("name",dialog.findViewById<EditText>(R.id.clientName).text.toString())
                 intent.putExtra("purpose",dialog.findViewById<EditText>(R.id.purpose).text.toString())
                 startActivity(intent)
-            }
-            for (i in Url.list){
-                Log.d("initial: ",i)
             }
         }
     }
@@ -225,7 +219,8 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun fetchClientDataFromServer(){
-        val request = object :StringRequest(Method.POST,Url.getClientData,
+        val request = @RequiresApi(Build.VERSION_CODES.N)
+        object :StringRequest(Method.POST, Url.getClientData,
             {
                 val array = JSONArray(it)
                 if (array.getString(0) == "success"){
@@ -238,13 +233,14 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                         val name = jsonObject.getString("client_name")
                         val number = jsonObject.getInt("number")
                         val image = jsonObject.getString("image")
-                        val initial = jsonObject.getString("initial_location")
-                        val final = jsonObject.getString("final_location")
                         val purpose = jsonObject.getString("purpose")
                         val amount = jsonObject.getInt("amount")
                         val dateTime = jsonObject.getString("date_time")
+                        val location = jsonObject.getString("location")
 
-                        val client = ClientModel(id, employeeName, name, purpose, amount, initial, final, image, number, dateTime)
+                        val res = destinationLocationData(location)
+                        val distance = calculateDistance(location)
+                        val client = ClientModel(id, employeeName, name, purpose, amount, distance, res, image, number, dateTime)
 
                         dataList.add(client)
                     }
@@ -285,4 +281,36 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun destinationLocationData(loc: String): String{
+        val re = loc.removeRange(0,1)
+        val e = re.removeRange(re.length-2,re.length)
+        val de = e.split(", ")
+        val el = de[de.size-1].substring(0,de[de.size-1].indexOf(",")).toDouble()
+        val eo = de[de.size-1].substring(de[de.size-1].indexOf(",").plus(1),de[de.size-1].length).toDouble()
+        locations = "${el},${eo}"
+        return locations
+    }
+
+    private fun calculateDistance(loc: String): Float {
+        val re = loc.removeRange(0, 1)
+        val e = re.removeRange(re.length - 2, re.length)
+        val de = e.split(", ")
+
+        var sla = de[0].substring(0, de[0].indexOf(",")).toDouble()
+        var slo = de[0].substring(de[0].indexOf(",").plus(1), de[0].length).toDouble()
+
+        for (i in 1 until de.size){
+            val ela = de[i].substring(0, de[i].indexOf(",")).toDouble()
+            val elo = de[i].substring(de[i].indexOf(",").plus(1), de[i].length).toDouble()
+
+            val d = SphericalUtil.computeDistanceBetween(LatLng(sla,slo),LatLng(ela,elo))
+            val distance = String.format("%.2f",d).toFloat()
+
+            sum += distance
+
+            sla = ela
+            slo = elo
+        }
+        return sum
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.tracker
+package com.example.tracker.service
 
 import android.app.ActivityManager
 import android.content.Context
@@ -21,7 +21,7 @@ class LocationStatus(val context: Context) {
 
     fun startLocationService(){
         if (!isLocationRunning()){
-            val intent = Intent(context.applicationContext,LocationService::class.java)
+            val intent = Intent(context.applicationContext, LocationService::class.java)
             intent.action = "startLocationService"
             context.startService(intent)
             Toast.makeText(context,"Location service started",Toast.LENGTH_SHORT).show()
@@ -30,7 +30,7 @@ class LocationStatus(val context: Context) {
 
     fun stopLocationService(){
         if (isLocationRunning()){
-            val intent = Intent(context.applicationContext,LocationService::class.java)
+            val intent = Intent(context.applicationContext, LocationService::class.java)
             intent.action = "stopLocationService"
             context.startService(intent)
             Toast.makeText(context,"Location Service Stopped",Toast.LENGTH_SHORT).show()

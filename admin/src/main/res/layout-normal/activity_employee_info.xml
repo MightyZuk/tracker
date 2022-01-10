@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.Employee">
+    tools:context=".employee.EmployeeInfo">
 
     <TextView
         android:id="@+id/employeeName"
@@ -57,7 +57,7 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/numberOfVisits"
+        android:id="@+id/visits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Number of Visits : 0"
@@ -78,7 +78,7 @@
         android:src="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.94"
         app:layout_constraintStart_toEndOf="@+id/employeeName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.024" />
@@ -86,7 +86,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_marginTop="20dp"
-        android:foreground="@drawable/get_in_back"
+        android:foreground="@drawable/card_background"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         app:cardCornerRadius="11dp"
@@ -113,29 +113,5 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/goForVisit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go for Visit"
-        app:cornerRadius="10dp"
-        android:paddingStart="30dp"
-        android:textStyle="bold"
-        android:fontFamily="@font/secular_one"
-        android:paddingEnd="35dp"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
-        android:textAlignment="center"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:paddingVertical="20dp"
-        app:shapeAppearanceOverlay="@style/fabShape"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.94"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView"
-        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

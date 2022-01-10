@@ -3,6 +3,7 @@ package com.example.admin.client
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,20 +36,10 @@ class ClientListAdapter(private val context: Context
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = list[position]
 
-        val start = current.initial_location
-        val sla = start.substring(0,start.indexOf(",")).toDouble()
-        val slo = start.substring(start.indexOf(",").plus(1),start.length).toDouble()
-        val end = current.final_location
-        val ela = end.substring(0,end.indexOf(",")).toDouble()
-        val elo = end.substring(end.indexOf(",").plus(1),end.length).toDouble()
-
-        val dis = SphericalUtil.computeDistanceBetween(LatLng(sla,slo),LatLng(ela,elo))
-        val d = String.format("%.0f",dis/1000).toFloat()
-
         binding.clientName.text = current.client_name
         binding.purpose.text = "purpose: ${current.purpose}"
-        binding.destinationLocation.text = current.final_location
-        binding.distanceTravelled.text = "Distance Travelled: ${d}km"
+        binding.destinationLocation.text = current.end
+        binding.distanceTravelled.text = "Distance Travelled: ${current.distance}km"
         binding.datePickerActions.text = current.dateTime
         Glide.with(context).asBitmap()
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
@@ -60,8 +51,11 @@ class ClientListAdapter(private val context: Context
             intent.putExtra("client_name",current.client_name)
             intent.putExtra("image",current.image)
             intent.putExtra("purpose",current.purpose)
-            intent.putExtra("initial",current.initial_location)
-            intent.putExtra("final",current.final_location)
+            intent.putExtra("initial",current.start)
+            intent.putExtra("final",current.end)
+            intent.putExtra("distance",current.distance)
+            intent.putExtra("locations",current.locations)
+            Log.d("locations Points",current.locations)
             it.context.startActivity(intent)
         }
     }
@@ -78,21 +72,4 @@ class ClientListAdapter(private val context: Context
         return position
     }
 
-//    private fun calculateDistance(sla: Double,slo: Double,ela: Double,elo: Double): Double{
-//        val loDiff = slo - elo
-//        var distance = sin(degreeToRadian(sla)) * sin(degreeToRadian(ela)) + cos(degreeToRadian(sla)) * cos(degreeToRadian(ela)) * cos(degreeToRadian(loDiff))
-//        distance = acos(distance)
-//        distance = radianToDegree(distance)
-//        distance *= 60 * 1.1515
-//        distance *= 1.609344
-//        return distance
-//    }
-//
-//    private fun degreeToRadian(latitude: Double): Double{
-//        return (latitude*Math.PI/180.0)
-//    }
-//
-//    private fun radianToDegree(distance: Double): Double{
-//        return (distance * 180/Math.PI)
-//    }
 }

@@ -1,6 +1,5 @@
-package com.example.tracker
+package com.example.tracker.service
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,25 +7,19 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import android.os.Looper
-import android.provider.SyncStateContract
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.content.getSystemService
-import com.google.android.gms.common.internal.Constants
+import com.example.tracker.ui.Form
+import com.example.tracker.R
+import com.example.tracker.usable.Url
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import org.w3c.dom.ls.LSException
 
 class LocationService: Service() {
 
@@ -38,7 +31,7 @@ class LocationService: Service() {
                 for(i in it){
                     val latitude = i.latitude
                     val longitude = i.longitude
-                    Url.list.add("${i.latitude},${i.longitude}")
+                    Url.list.add("$latitude,$longitude")
                     Toast.makeText(this@LocationService,"$latitude,$longitude",Toast.LENGTH_SHORT).show()
                 }
             }
@@ -54,7 +47,7 @@ class LocationService: Service() {
     private fun startLocationService(){
         val channelId = "location_notification_channel"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val resultIntent = Intent(this,Form::class.java)
+        val resultIntent = Intent(this, Form::class.java)
         val pendingIntent = PendingIntent
             .getActivities(applicationContext,0, arrayOf(resultIntent),PendingIntent.FLAG_UPDATE_CURRENT)
 

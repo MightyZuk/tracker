@@ -1,17 +1,20 @@
-package com.example.tracker
+package com.example.tracker.ui
 
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.tracker.R
 import com.example.tracker.databinding.ActivityGetInBinding
+import com.example.tracker.usable.Url
 import org.json.JSONObject
 
-class GetIn : AppCompatActivity() {
+class GetIn : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityGetInBinding
     private lateinit var sharedPreferences: SharedPreferences
@@ -33,31 +36,7 @@ class GetIn : AppCompatActivity() {
             finish()
         }
 
-        binding.getIn.setOnClickListener{
-            val id = binding.uniqueId.text
-            val password = binding.password.text
-            when{
-                id.isEmpty() -> {
-                    binding.uniqueId.requestFocus()
-                    binding.uniqueId.error = "Required"
-                }
-                password.isEmpty() -> {
-                    binding.password.requestFocus()
-                    binding.password.error = "Required"
-                }
-                id.length < 6 -> {
-                    binding.uniqueId.requestFocus()
-                    binding.uniqueId.error = "Please enter valid id"
-                }
-                password.length < 6 -> {
-                    binding.password.requestFocus()
-                    binding.password.error = "Please enter valid password"
-                }
-                else -> {
-                    checkLoginInfo(id.toString(),password.toString())
-                }
-            }
-        }
+        binding.getIn.setOnClickListener(this)
 
     }
 
@@ -68,7 +47,7 @@ class GetIn : AppCompatActivity() {
 
     private fun checkLoginInfo(id: String,password: String){
 
-        val request = object :StringRequest(Method.POST,Url.login,
+        val request = object :StringRequest(Method.POST, Url.login,
             {
                 val jsonObject = JSONObject(it)
                 val success = jsonObject.getString("success")
@@ -106,4 +85,35 @@ class GetIn : AppCompatActivity() {
         Log.d("tag: ",request.toString())
         Volley.newRequestQueue(this).add(request)
     }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.getIn ->{
+                val id = binding.uniqueId.text
+                val password = binding.password.text
+                when{
+                    id.isEmpty() -> {
+                        binding.uniqueId.requestFocus()
+                        binding.uniqueId.error = "Required"
+                    }
+                    password.isEmpty() -> {
+                        binding.password.requestFocus()
+                        binding.password.error = "Required"
+                    }
+                    id.length < 6 -> {
+                        binding.uniqueId.requestFocus()
+                        binding.uniqueId.error = "Please enter valid id"
+                    }
+                    password.length < 6 -> {
+                        binding.password.requestFocus()
+                        binding.password.error = "Please enter valid password"
+                    }
+                    else -> {
+                        checkLoginInfo(id.toString(),password.toString())
+                    }
+                }
+            }
+        }
+    }
 }
+
