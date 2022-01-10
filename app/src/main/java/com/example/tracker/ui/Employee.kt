@@ -58,6 +58,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     var location: Location ?= null
+    private lateinit var employeeAdapter: ClientListAdapter
 
     companion object{
         var locations = ""
@@ -71,34 +72,36 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Employee</font>")
         setContentView(binding.root)
 
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        permissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+                isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION]
+                    ?: isLocationPermissionGranted
+                isCameraPermissionGranted =
+                    permission[Manifest.permission.CAMERA] ?: isCameraPermissionGranted
+                isSmsPermissionGranted =
+                    permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
+            }
 
-        dataList = ArrayList()
-
+        runtimePermission()
         sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        dataList = ArrayList()
 
-        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            permission ->
-            isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: isLocationPermissionGranted
-            isCameraPermissionGranted = permission[Manifest.permission.CAMERA] ?: isCameraPermissionGranted
-            isSmsPermissionGranted = permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
+        if (isLocationPermissionGranted && isCameraPermissionGranted && isSmsPermissionGranted) {
+            fetchClientDataFromServer()
+            Handler(Looper.getMainLooper()).postDelayed({ checkGPS() }, 500)
+
+            employeeAdapter = ClientListAdapter(this, dataList)
+            binding.clientList.adapter = employeeAdapter
         }
-        runtimePermission()
-
-        Handler(Looper.getMainLooper()).postDelayed({checkGPS()},500)
-
-        fetchClientDataFromServer()
-
-        val employeeAdapter = ClientListAdapter(this,dataList)
-        binding.clientList.adapter = employeeAdapter
 
         binding.goForVisit.setOnClickListener(this)
 
         binding.refreshClient.setOnRefreshListener {
             dataList.clear()
-            employeeAdapter.notifyDataSetChanged()
             fetchClientDataFromServer()
+            employeeAdapter.notifyDataSetChanged()
             binding.refreshClient.isRefreshing = false
         }
 
@@ -108,14 +111,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         Glide.with(this).asBitmap().load(sharedPreferences.getString("employee_image",null))
             .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
             .into(binding.employeeImage)
-
-
-        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        val task = fusedLocationProviderClient.lastLocation
-
-        task.addOnCompleteListener {
-            location = it.result
-        }
 
         if(LocationStatus(this).isLocationRunning()){
             startActivity(Intent(this,Form::class.java))
@@ -142,7 +137,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
             R.id.goForVisit -> {
                 editor.putString("start","${location?.latitude},${location?.longitude}")
                 editor.apply()
-                Toast.makeText(this,"started at: ${location?.latitude},${location?.longitude}",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this,"started at: ${location?.latitude},${location?.longitude}",Toast.LENGTH_SHORT).show()
                 Url.list.clear()
                 LocationStatus(this).startLocationService()
                 popUp()

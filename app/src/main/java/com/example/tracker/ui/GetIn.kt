@@ -64,13 +64,12 @@ class GetIn : AppCompatActivity(), View.OnClickListener {
                     editor.putString("name",name)
                     editor.putString("password",password)
                     editor.apply()
-                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this,Employee::class.java))
                     finish()
                 }else{
                     Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
                 }
-
             },
             {
                 Toast.makeText(this,"Invalid credentials",Toast.LENGTH_SHORT).show()})
@@ -82,7 +81,6 @@ class GetIn : AppCompatActivity(), View.OnClickListener {
                 return map
             }
         }
-        Log.d("tag: ",request.toString())
         Volley.newRequestQueue(this).add(request)
     }
 
