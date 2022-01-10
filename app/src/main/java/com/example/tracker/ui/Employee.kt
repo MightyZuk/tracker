@@ -60,7 +60,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     var location: Location ?= null
 
     companion object{
-        var sum = 0F
         var locations = ""
     }
 
@@ -283,7 +282,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
     private fun destinationLocationData(loc: String): String{
         val re = loc.removeRange(0,1)
-        val e = re.removeRange(re.length-2,re.length)
+        val e = re.removeRange(re.length-1,re.length)
         val de = e.split(", ")
         val el = de[de.size-1].substring(0,de[de.size-1].indexOf(",")).toDouble()
         val eo = de[de.size-1].substring(de[de.size-1].indexOf(",").plus(1),de[de.size-1].length).toDouble()
@@ -293,18 +292,19 @@ class Employee : AppCompatActivity(), View.OnClickListener {
 
     private fun calculateDistance(loc: String): Float {
         val re = loc.removeRange(0, 1)
-        val e = re.removeRange(re.length - 2, re.length)
+        val e = re.removeRange(re.length - 1, re.length)
         val de = e.split(", ")
 
         var sla = de[0].substring(0, de[0].indexOf(",")).toDouble()
         var slo = de[0].substring(de[0].indexOf(",").plus(1), de[0].length).toDouble()
 
+        var sum = 0F
         for (i in 1 until de.size){
             val ela = de[i].substring(0, de[i].indexOf(",")).toDouble()
             val elo = de[i].substring(de[i].indexOf(",").plus(1), de[i].length).toDouble()
 
             val d = SphericalUtil.computeDistanceBetween(LatLng(sla,slo),LatLng(ela,elo))
-            val distance = String.format("%.2f",d).toFloat()
+            val distance = String.format("%.3f",d/1000).toFloat()
 
             sum += distance
 

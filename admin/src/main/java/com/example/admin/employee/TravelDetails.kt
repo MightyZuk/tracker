@@ -58,10 +58,6 @@ import kotlin.math.sin
 class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
 
     private lateinit var binding: ActivityTravelDetailsBinding
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: com.google.android.gms.location.LocationRequest
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var locationPoints: ArrayList<LatLng>
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("SetTextI18n", "MissingPermission")
@@ -73,31 +69,8 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
         binding = ActivityTravelDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        locationPoints = ArrayList()
-
-        Places.initialize(this,"AIzaSyCtFiLyzGtC47l1DGCSAJBMePdTb32G668")
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        locationRequest = com.google.android.gms.location.LocationRequest().apply {
-            this.interval = 1000 * 5
-            this.fastestInterval = 1000 * 3
-            this.priority = LocationRequest.QUALITY_HIGH_ACCURACY
-        }
-
-        locationCallback = object : LocationCallback(){
-            override fun onLocationResult(result: LocationResult) {
-                super.onLocationResult(result)
-                result.locations.let {
-                    for (i in it){
-                        locationPoints.add(LatLng(i.latitude,i.longitude))
-                        Toast.makeText(applicationContext,"${i.latitude},${i.longitude}",Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
 
         Glide.with(this).asBitmap()
             .load(intent.getStringExtra("image"))
@@ -141,7 +114,6 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
 
             val point = LatLng(slat.toDouble(),slon.toDouble())
             polylineOptions.add(point)
-            Log.d("points ",point.toString())
         }
         map.addPolyline(polylineOptions)
 
@@ -168,7 +140,6 @@ class TravelDetails : AppCompatActivity(),OnMapReadyCallback{
 
         map.moveCamera(CameraUpdateFactory
             .newLatLngZoom(center,16F))
-
 
     }
 }

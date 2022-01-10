@@ -27,7 +27,6 @@ class EmployeeInfo : AppCompatActivity() {
     private lateinit var binding: ActivityEmployeeInfoBinding
     private lateinit var list: ArrayList<ClientModel>
     companion object{
-        var sum = 0F
         var locations = ""
     }
 
@@ -131,7 +130,7 @@ class EmployeeInfo : AppCompatActivity() {
 
     private fun initial(loc: String): String{
         val re = loc.removeRange(0,1)
-        val e = re.removeRange(re.length-2,re.length)
+        val e = re.removeRange(re.length-1,re.length)
         val de = e.split(", ")
         val el = de[0].substring(0,de[0].indexOf(",")).toDouble()
         val eo = de[0].substring(de[0].indexOf(",").plus(1),de[0].length).toDouble()
@@ -140,8 +139,9 @@ class EmployeeInfo : AppCompatActivity() {
     }
 
     private fun calculateDistance(loc: String): Float {
+        var sum = 0F
         val re = loc.removeRange(0, 1)
-        val e = re.removeRange(re.length - 2, re.length)
+        val e = re.removeRange(re.length - 1, re.length)
         val de = e.split(", ")
 
         var sla = de[0].substring(0, de[0].indexOf(",")).toDouble()
@@ -152,7 +152,7 @@ class EmployeeInfo : AppCompatActivity() {
             val elo = de[i].substring(de[i].indexOf(",").plus(1), de[i].length).toDouble()
 
             val d = SphericalUtil.computeDistanceBetween(LatLng(sla,slo), LatLng(ela,elo))
-            val distance = String.format("%.2f",d/1000).toFloat()
+            val distance = String.format("%.3f",d/1000).toFloat()
 
             sum += distance
 

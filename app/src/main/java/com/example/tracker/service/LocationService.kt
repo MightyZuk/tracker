@@ -32,7 +32,7 @@ class LocationService: Service() {
                     val latitude = i.latitude
                     val longitude = i.longitude
                     Url.list.add("$latitude,$longitude")
-                    Toast.makeText(this@LocationService,"$latitude,$longitude",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@LocationService,"$latitude,$longitude",Toast.LENGTH_SHORT).show()
                 }
             }
         }
