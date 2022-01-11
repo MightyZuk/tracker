@@ -64,7 +64,7 @@ class GetIn : AppCompatActivity(), View.OnClickListener {
                     editor.putString("name",name)
                     editor.putString("password",password)
                     editor.apply()
-//                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this,Employee::class.java))
                     finish()
                 }else{
@@ -74,7 +74,7 @@ class GetIn : AppCompatActivity(), View.OnClickListener {
             {
                 Toast.makeText(this,"Invalid credentials",Toast.LENGTH_SHORT).show()})
         {
-            override fun getParams(): MutableMap<String, String> {
+            override fun getParams(): HashMap<String, String> {
                 val map = HashMap<String,String>()
                 map["id"] = id
                 map["password"] = password

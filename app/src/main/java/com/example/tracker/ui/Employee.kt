@@ -268,6 +268,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         when(item.itemId){
             R.id.signOut ->{
                 editor.putBoolean("isLogin",false)
+                editor.commit()
                 editor.apply()
                 startActivity(Intent(this,GetIn::class.java))
             }
