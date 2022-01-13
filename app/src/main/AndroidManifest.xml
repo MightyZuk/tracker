@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:allowBackup="true"
@@ -22,9 +21,8 @@
         tools:targetApi="m" >
         <service
             android:name=".service.LocationService"
-            android:enabled="true"
-            android:exported="false"
-            tools:ignore="Instantiatable">
+            android:foregroundServiceType="location"
+            android:enabled="true">
         </service>
 
         <activity

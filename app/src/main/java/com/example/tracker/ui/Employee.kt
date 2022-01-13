@@ -52,17 +52,12 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     private lateinit var dialog: Dialog
     private var isLocationPermissionGranted = false
     private var isCameraPermissionGranted = false
-    private var isSmsPermissionGranted = false
     private lateinit var locationManager: LocationManager
     private lateinit var dataList: ArrayList<ClientModel>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     var location: Location ?= null
     private lateinit var employeeAdapter: ClientListAdapter
-
-    companion object{
-        var locations = ""
-    }
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n", "MissingPermission")
@@ -72,29 +67,31 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Employee</font>")
         setContentView(binding.root)
 
+
         permissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
                 isLocationPermissionGranted = permission[Manifest.permission.ACCESS_FINE_LOCATION]
                     ?: isLocationPermissionGranted
                 isCameraPermissionGranted =
                     permission[Manifest.permission.CAMERA] ?: isCameraPermissionGranted
-                isSmsPermissionGranted =
-                    permission[Manifest.permission.READ_SMS] ?: isSmsPermissionGranted
             }
 
         runtimePermission()
+
         sharedPreferences = getSharedPreferences("pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
+
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         dataList = ArrayList()
 
-        if (isLocationPermissionGranted && isCameraPermissionGranted && isSmsPermissionGranted) {
+        if (isLocationPermissionGranted && isCameraPermissionGranted) {
             fetchClientDataFromServer()
             Handler(Looper.getMainLooper()).postDelayed({ checkGPS() }, 500)
 
-            employeeAdapter = ClientListAdapter(this, dataList)
-            binding.clientList.adapter = employeeAdapter
+
         }
+        employeeAdapter = ClientListAdapter(this, dataList)
+        binding.clientList.adapter = employeeAdapter
 
         binding.goForVisit.setOnClickListener(this)
 
@@ -127,7 +124,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
-
     }
 
     @SuppressLint("MissingPermission")
@@ -149,7 +145,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("ResourceType")
     fun popUp(){
         dialog = Dialog(this)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.setContentView(R.layout.pop_up)
         dialog.create()
         dialog.show()
@@ -175,9 +171,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         isCameraPermissionGranted = ContextCompat.checkSelfPermission(this,
         Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
-        isSmsPermissionGranted = ContextCompat.checkSelfPermission(this,
-        Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED
-
         val requests: MutableList<String> = ArrayList()
 
         if (!isLocationPermissionGranted){
@@ -185,9 +178,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         }
         if (!isCameraPermissionGranted){
             requests.add(Manifest.permission.CAMERA)
-        }
-        if (!isSmsPermissionGranted){
-            requests.add(Manifest.permission.READ_SMS)
         }
         if (requests.isNotEmpty()){
             permissionLauncher.launch(requests.toTypedArray())
@@ -268,7 +258,6 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         when(item.itemId){
             R.id.signOut ->{
                 editor.putBoolean("isLogin",false)
-                editor.commit()
                 editor.apply()
                 startActivity(Intent(this,GetIn::class.java))
             }
@@ -282,8 +271,7 @@ class Employee : AppCompatActivity(), View.OnClickListener {
         val de = e.split(", ")
         val el = de[de.size-1].substring(0,de[de.size-1].indexOf(",")).toDouble()
         val eo = de[de.size-1].substring(de[de.size-1].indexOf(",").plus(1),de[de.size-1].length).toDouble()
-        locations = "${el},${eo}"
-        return locations
+        return "${el},${eo}"
     }
 
     private fun calculateDistance(loc: String): Float {

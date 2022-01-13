@@ -39,14 +39,14 @@ class LocationService: Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+       return null
     }
 
     @SuppressLint("UnspecifiedImmutableFlag", "MissingPermission")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startLocationService(){
         val channelId = "location_notification_channel"
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NotificationManager::class.java) as NotificationManager
         val resultIntent = Intent(this, Form::class.java)
         val pendingIntent = PendingIntent
             .getActivities(applicationContext,0, arrayOf(resultIntent),PendingIntent.FLAG_UPDATE_CURRENT)
@@ -76,7 +76,7 @@ class LocationService: Service() {
 
         LocationServices.getFusedLocationProviderClient(this)
             .requestLocationUpdates(locationRequest,locationCallback,Looper.getMainLooper())
-        startForeground(175,builder.build())
+        startForeground(1,builder.build())
     }
 
     @SuppressLint("MissingPermission")
@@ -98,7 +98,6 @@ class LocationService: Service() {
                 }
             }
         }
-
-        return super.onStartCommand(intent, flags, startId)
+        return START_STICKY
     }
 }

@@ -30,6 +30,8 @@ class EmployeeDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         dataList = ArrayList()
+
+
         getDataFromServer()
 
         val listAdapter = EmployeeListAdapter(this,dataList)
@@ -72,7 +74,9 @@ class EmployeeDetails : AppCompatActivity() {
                     binding.listOfEmployees.adapter = listAdapter
                 }
             },
-            { Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()})
+            {
+                Toast.makeText(this,"it.message", Toast.LENGTH_SHORT).show()
+            })
         Volley.newRequestQueue(this).add(request)
     }
 }

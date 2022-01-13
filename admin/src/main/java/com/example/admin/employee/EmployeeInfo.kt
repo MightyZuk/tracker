@@ -120,7 +120,7 @@ class EmployeeInfo : AppCompatActivity() {
 
     private fun destination(loc: String): String{
         val re = loc.removeRange(0,1)
-        val e = re.removeRange(re.length-2,re.length)
+        val e = re.removeRange(re.length-1,re.length)
         val de = e.split(", ")
         val el = de[de.size-1].substring(0,de[de.size-1].indexOf(",")).toDouble()
         val eo = de[de.size-1].substring(de[de.size-1].indexOf(",").plus(1),de[de.size-1].length).toDouble()
